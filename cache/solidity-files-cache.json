@@ -1,0 +1,39 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/Users/nixon.p/Documents/Personal/propertyescrow/contracts/PropertyEscrow.sol": {
+      "lastModificationDate": 1635505715664,
+      "contentHash": "ebc20cf258c7db4041f751d6e41be626",
+      "sourceName": "contracts/PropertyEscrow.sol",
+      "solcConfig": {
+        "version": "0.8.5",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.5"
+      ],
+      "artifacts": [
+        "PropertyEscrow"
+      ]
+    }
+  }
+}
