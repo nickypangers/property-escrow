@@ -31,7 +31,7 @@ describe("PropertyEscrow contract", function () {
       expect(isManager).to.equal(false);
     });
 
-    it("Execute set manager from non-owner should revert Only owner can execute", async function () {
+    it("Execute set manager from non-owner should revert", async function () {
       await expect(
         propertyEscrow.connect(addr1.address).setManager(addr1.address, true)
       ).to.be.reverted;
