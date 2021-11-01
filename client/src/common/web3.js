@@ -1,65 +1,116 @@
 import { ethers } from "ethers";
+import PropertyEscrowContract from "../contracts/PropertyEscrow.json";
 import store from "@/store/index.js";
 
+const getContractAddress = () => "0xe58505ce40507E04f6be4587bD8B41922d7B3Cfa";
+
+// export const getProviderURL = (network) => {
+//   console.debug("network", network);
+//   switch (network) {
+//     case "ROPSTEN":
+//       return "https://eth-ropsten.alchemyapi.io/v2/MzQ5PAmiP3qH9nhONMES98WfElPeh05n";
+//     default:
+//       return "https://eth-ropsten.alchemyapi.io/v2/MzQ5PAmiP3qH9nhONMES98WfElPeh05n";
+//   }
+// };
+
 const connectToWeb3 = () => {
-  const provider = new ethers.providers.Web3Provider(
-    window.ethereum,
-    "ropsten"
-  );
-  console.log(provider);
+  const provider = getProvider();
+  console.debug("provider", provider);
   if (provider == null) {
     throw "Provider not found";
   }
+};
 
-  store.commit("setProvider", provider);
+const getProvider = () => {
+  return new ethers.providers.Web3Provider(window.ethereum, "ropsten");
 };
 
 const getAccounts = async () => {
-  let provider = store.state.provider;
-
+  let provider = getProvider();
+  // let provider = store.state.provider;
   if (provider == null) {
     throw "Provider not found";
   }
 
   let accounts = await provider.listAccounts();
-
   if (accounts.length == 0) {
     throw "No accounts";
   }
 
-  console.log(accounts);
+  console.debug("accounts", accounts);
   store.commit("setAccounts", accounts);
 };
 
 const getSigner = () => {
-  const provider = store.state.provider;
+  const provider = getProvider();
 
   if (provider == null) {
     throw "Provider not found";
   }
 
-  const accounts = store.state.accounts;
-
-  if (accounts.length == 0) {
-    throw "No accounts";
-  }
-
-  let signer = provider.getSigner(accounts[0]);
+  let signer = provider.getSigner();
   if (signer == undefined || signer == null) {
     throw "No signer";
   }
+  return signer;
+};
 
-  console.log(signer);
+export const getContract = async () => {
+  let provider = getProvider();
+  if (provider == null) {
+    throw "Provider not found";
+  }
 
-  store.commit("setSigner", signer);
+  let readOnlyContract = new ethers.Contract(
+    getContractAddress(),
+    PropertyEscrowContract.abi,
+    provider
+  );
+  console.debug("readOnlyContract", readOnlyContract);
+  store.commit("setReadOnlyContract", readOnlyContract);
+
+  let signer = getSigner();
+  if (signer == null) {
+    throw "Signer not found";
+  }
+
+  let contract = new ethers.Contract(
+    getContractAddress(),
+    PropertyEscrowContract.abi,
+    signer
+  );
+  console.debug("contract", contract);
+  store.commit("setContract", contract);
+
+  let contractSigner = contract.connect(signer);
+
+  console.debug("contractSigner", contractSigner);
+  store.commit("setContractSigner", contractSigner);
 };
 
 export const initWeb3 = async () => {
   if (window.ethereum == undefined) {
     throw "Please install metamask";
   }
-  await window.ethereum.enable();
+  await window.ethereum.request({ method: "eth_requestAccounts" });
   connectToWeb3();
   await getAccounts();
-  getSigner();
+  // getSigner();
+  await getContract();
+};
+
+export const getBalance = async () => {
+  const provider = new ethers.providers.Web3Provider(
+    window.ethereum,
+    "ropsten"
+  );
+  if (provider == null) {
+    throw "Provider not found";
+  }
+
+  let balance = await provider.getBalance(store.state.accounts[0]);
+  let formattedBalance = ethers.utils.formatEther(balance);
+  console.debug("formattedBalance", formattedBalance);
+  return formattedBalance;
 };

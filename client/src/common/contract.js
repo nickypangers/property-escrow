@@ -1,14 +1,26 @@
-// export const getContractAbi = () => PropertyEscrowContract;
+import store from "@/store/index.js";
+import { ethers } from "ethers";
 
-export const getContractAddress = () =>
-  "0xe58505ce40507E04f6be4587bD8B41922d7B3Cfa";
-
-export const getProviderURL = (network) => {
-  console.debug("network", network);
-  switch (network) {
-    case "ROPSTEN":
-      return "https://eth-ropsten.alchemyapi.io/v2/MzQ5PAmiP3qH9nhONMES98WfElPeh05n";
-    default:
-      return "https://eth-ropsten.alchemyapi.io/v2/MzQ5PAmiP3qH9nhONMES98WfElPeh05n";
-  }
+export default {
+  async createListing(listing) {
+    try {
+      let contract = store.state.contract;
+      const txResponse = await contract.createListing(
+        listing.address1,
+        listing.address2,
+        listing.city,
+        listing.region,
+        listing.postcode,
+        listing.country,
+        listing.name,
+        listing.description,
+        ethers.utils.parseEther(`${listing.price}`, "ether")
+      );
+      const txReceipt = await txResponse.wait();
+      console.debug("txReceipt", txReceipt);
+      return { transaction: txReceipt.transactionHash };
+    } catch (e) {
+      alert(e);
+    }
+  },
 };

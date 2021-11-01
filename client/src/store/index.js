@@ -2,9 +2,9 @@ import { createStore } from "vuex";
 
 export default createStore({
   state: {
-    provider: null,
-    signer: null,
+    readOnlyContract: null,
     contract: null,
+    contractSigner: null,
     accounts: [],
   },
   // getters: {
@@ -14,17 +14,17 @@ export default createStore({
   //   address: (state) => state.address,
   // },
   mutations: {
-    setProvider(state, provider) {
-      state.provider = provider;
-    },
-    setSigner(state, signer) {
-      state.signer = signer;
+    setReadOnlyContract(state, readOnlyContract) {
+      state.readOnlyContract = readOnlyContract;
     },
     setContract(state, contract) {
       state.contract = contract;
     },
     setAccounts(state, accounts) {
       state.accounts = accounts;
+    },
+    setContractSigner(state, contractSigner) {
+      state.contractSigner = contractSigner;
     },
   },
   actions: {},
