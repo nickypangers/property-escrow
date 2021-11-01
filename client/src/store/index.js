@@ -5,7 +5,7 @@ export default createStore({
     provider: null,
     signer: null,
     contract: null,
-    address: "",
+    accounts: [],
   },
   // getters: {
   //   provider: (state) => state.provider,
@@ -23,8 +23,8 @@ export default createStore({
     setContract(state, contract) {
       state.contract = contract;
     },
-    setAddress(state, address) {
-      state.address = address;
+    setAccounts(state, accounts) {
+      state.accounts = accounts;
     },
   },
   actions: {},
