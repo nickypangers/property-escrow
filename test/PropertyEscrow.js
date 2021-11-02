@@ -148,5 +148,10 @@ describe("PropertyEscrow contract", function () {
       expect(property.description).to.equal("Some description");
       expect(property.price).to.equal(1);
     });
+
+    it("Get property list should return list length of 1", async function () {
+      const propertyList = await propertyEscrow.getPropertyList();
+      expect(propertyList.length).to.equal(1);
+    });
   });
 });

@@ -23,4 +23,27 @@ export default {
       alert(e);
     }
   },
+  async getPropertyList() {
+    try {
+      let contract = store.state.contract;
+      return await contract.getPropertyList();
+    } catch (e) {
+      alert(e);
+    }
+  },
+  async purchaseProperty(property) {
+    console.debug("property", property.price);
+    try {
+      let contract = store.state.contract;
+      const txResponse = await contract.payProperty(property.id, {
+        from: store.state.accounts[0],
+        value: property.price,
+      });
+      const txReceipt = await txResponse.wait();
+      console.debug("txReceipt", txReceipt);
+      return { transaction: txReceipt.transactionHash };
+    } catch (e) {
+      alert(e);
+    }
+  },
 };

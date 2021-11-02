@@ -203,6 +203,10 @@ contract PropertyEscrow {
         return property.isSold;
     }
 
+    function getPropertyList() public view returns (Property[] memory) {
+        return properties;
+    }
+
     function getProperty(uint256 _id) private view returns (Property memory) {
         for (uint256 i = 0; i < properties.length; i = i + 1) {
             if (properties[i].id == _id) {

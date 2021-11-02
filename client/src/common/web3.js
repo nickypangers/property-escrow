@@ -2,7 +2,7 @@ import { ethers } from "ethers";
 import PropertyEscrowContract from "../contracts/PropertyEscrow.json";
 import store from "@/store/index.js";
 
-const getContractAddress = () => "0xe58505ce40507E04f6be4587bD8B41922d7B3Cfa";
+const getContractAddress = () => "0xBB693fb1e9E2a60161Aa2b4ce2E9e35c54897e37";
 
 // export const getProviderURL = (network) => {
 //   console.debug("network", network);

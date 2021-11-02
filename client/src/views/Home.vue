@@ -9,6 +9,7 @@
     <div v-show="isConnected">
       <div>
         <button @click="getPropertyLength">Get Property Length</button>
+        <button @click="router.push('/app')">Go to App</button>
       </div>
       <div>
         {{ listing }}
@@ -89,6 +90,7 @@ import { computed, watch, ref, reactive } from "vue";
 import { useStore } from "vuex";
 import { initWeb3, getBalance } from "@/common/web3.js";
 import contract from "@/common/contract.js";
+import { useRouter } from "vue-router";
 
 export default {
   name: "Home",
@@ -97,6 +99,7 @@ export default {
     const testing = "hi";
 
     const store = useStore();
+    const router = useRouter();
 
     const isConnected = ref(false);
 
@@ -156,6 +159,7 @@ export default {
       isConnected,
       listing,
       createListing,
+      router,
     };
   },
 };
