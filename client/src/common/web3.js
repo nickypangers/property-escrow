@@ -4,16 +4,6 @@ import store from "@/store/index.js";
 
 const getContractAddress = () => "0xBB693fb1e9E2a60161Aa2b4ce2E9e35c54897e37";
 
-// export const getProviderURL = (network) => {
-//   console.debug("network", network);
-//   switch (network) {
-//     case "ROPSTEN":
-//       return "https://eth-ropsten.alchemyapi.io/v2/MzQ5PAmiP3qH9nhONMES98WfElPeh05n";
-//     default:
-//       return "https://eth-ropsten.alchemyapi.io/v2/MzQ5PAmiP3qH9nhONMES98WfElPeh05n";
-//   }
-// };
-
 const connectToWeb3 = () => {
   const provider = getProvider();
   console.debug("provider", provider);

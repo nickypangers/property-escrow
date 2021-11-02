@@ -2,10 +2,12 @@ import { createStore } from "vuex";
 
 export default createStore({
   state: {
+    isLoading: false,
     readOnlyContract: null,
     contract: null,
     contractSigner: null,
     accounts: [],
+    
   },
   // getters: {
   //   provider: (state) => state.provider,
@@ -14,6 +16,9 @@ export default createStore({
   //   address: (state) => state.address,
   // },
   mutations: {
+    setIsLoading(state, isLoading) {
+      state.isLoading = isLoading;
+    },
     setReadOnlyContract(state, readOnlyContract) {
       state.readOnlyContract = readOnlyContract;
     },

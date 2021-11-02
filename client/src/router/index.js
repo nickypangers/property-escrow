@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
 import App from "../views/App.vue";
+import Create from "../views/Create.vue";
 import store from "@/store/index.js";
 
 const routes = [
@@ -13,6 +14,18 @@ const routes = [
     path: "/app",
     name: "App",
     component: App,
+    beforeEnter(to, from, next) {
+      if (store.state.contract == null) {
+        next("/");
+      } else {
+        next();
+      }
+    },
+  },
+  {
+    path: "/app/create",
+    name: "Create",
+    component: Create,
     beforeEnter(to, from, next) {
       if (store.state.contract == null) {
         next("/");

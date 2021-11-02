@@ -20,7 +20,8 @@ export default {
       console.debug("txReceipt", txReceipt);
       return { transaction: txReceipt.transactionHash };
     } catch (e) {
-      alert(e);
+      console.debug("error", e);
+      alert(e.message);
     }
   },
   async getPropertyList() {
@@ -28,7 +29,8 @@ export default {
       let contract = store.state.contract;
       return await contract.getPropertyList();
     } catch (e) {
-      alert(e);
+      console.debug("error", e);
+      alert(e.message);
     }
   },
   async purchaseProperty(property) {
@@ -43,7 +45,8 @@ export default {
       console.debug("txReceipt", txReceipt);
       return { transaction: txReceipt.transactionHash };
     } catch (e) {
-      alert(e);
+      console.debug("error", e);
+      alert(e.message);
     }
   },
 };

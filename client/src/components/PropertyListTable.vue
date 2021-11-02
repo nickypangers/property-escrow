@@ -12,42 +12,18 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="property in propertyList" :key="'property-' + property.id">
-        <td>{{ property.id }}</td>
-        <td>{{ property.name }}</td>
-        <td>{{ property.propertyAddress.country }}</td>
-        <td>
-          <a
-            :href="getEtherscanLink(property.owner)"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {{ property.owner }}
-          </a>
-        </td>
-
-        <td>{{ ethers.utils.formatEther(property.price) }} ETH</td>
-        <td>
-          <button class="p-2 bg-blue-200 rounded-xl">View More</button>
-        </td>
-        <td>
-          <button
-            class="p-2 bg-blue-200 rounded-xl"
-            v-if="!property.isSold"
-            @click="purchaseProperty(property)"
-          >
-            Purchase
-          </button>
-          <button class="p-2 bg-red-200 rounded-xl" v-if="property.isSold">
-            Sold
-          </button>
-        </td>
-      </tr>
+      <property-list-row
+        v-for="property in propertyList"
+        :key="'property-' + property.id"
+        :property="property"
+        @success="emit('refresh')"
+      />
     </tbody>
   </table>
 </template>
 <script>
 import { ethers } from "ethers";
+import PropertyListRow from "@/components/PropertyListRow";
 export default {
   props: {
     propertyList: {
@@ -55,20 +31,14 @@ export default {
       default: () => [],
     },
   },
-  emits: ["purchase"],
+  emits: ["refresh"],
+  components: {
+    PropertyListRow,
+  },
   setup(props, { emit }) {
-    const getEtherscanLink = (address) => {
-      return "https://ropsten.etherscan.io/address/" + address;
-    };
-
-    const purchaseProperty = (property) => {
-      emit("purchase", property);
-    };
-
     return {
       ethers,
-      getEtherscanLink,
-      purchaseProperty,
+      emit,
     };
   },
 };
