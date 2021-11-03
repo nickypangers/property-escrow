@@ -2,7 +2,7 @@ import { ethers } from "ethers";
 import PropertyEscrowContract from "../contracts/PropertyEscrow.json";
 import store from "@/store/index.js";
 
-const getContractAddress = () => "0xBB693fb1e9E2a60161Aa2b4ce2E9e35c54897e37";
+const getContractAddress = () => "0xaE04272303c0DA608732513EB2fFEa8aEE4F9647";
 
 const connectToWeb3 = () => {
   const provider = getProvider();
@@ -10,15 +10,21 @@ const connectToWeb3 = () => {
   if (provider == null) {
     throw "Provider not found";
   }
+  if (provider.network.name != "ropsten") {
+    throw "Wrong network";
+  }
 };
 
 const getProvider = () => {
-  return new ethers.providers.Web3Provider(window.ethereum, "ropsten");
+  const provider = new ethers.providers.Web3Provider(
+    window.ethereum,
+    "ropsten"
+  );
+  return provider;
 };
 
 const getAccounts = async () => {
   let provider = getProvider();
-  // let provider = store.state.provider;
   if (provider == null) {
     throw "Provider not found";
   }
@@ -43,6 +49,7 @@ const getSigner = () => {
   if (signer == undefined || signer == null) {
     throw "No signer";
   }
+  console.debug("signer", signer);
   return signer;
 };
 
@@ -84,10 +91,15 @@ export const initWeb3 = async () => {
     throw "Please install metamask";
   }
   await window.ethereum.request({ method: "eth_requestAccounts" });
-  connectToWeb3();
-  await getAccounts();
-  // getSigner();
-  await getContract();
+  try {
+    connectToWeb3();
+    await getAccounts();
+    // getSigner();
+    await getContract();
+  } catch (e) {
+    console.error("testing");
+    throw e;
+  }
 };
 
 export const getBalance = async () => {
@@ -100,7 +112,8 @@ export const getBalance = async () => {
   }
 
   let balance = await provider.getBalance(store.state.accounts[0]);
-  let formattedBalance = ethers.utils.formatEther(balance);
+  let formattedBalance = Number(ethers.utils.formatEther(balance));
   console.debug("formattedBalance", formattedBalance);
-  return formattedBalance;
+  // return Number(formattedBalance).toFixed(2);
+  store.commit("setBalance", formattedBalance);
 };

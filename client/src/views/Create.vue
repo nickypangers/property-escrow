@@ -66,7 +66,17 @@
         v-model="listing.price"
         placeholder="Price"
       />
-      <input type="submit" value="Create Listing" />
+      <input
+        type="submit"
+        value="Create Listing"
+        v-show="!isTransactionLoading"
+      />
+      <button
+        class="w-full flex justify-center mt-3 py-3"
+        v-show="isTransactionLoading"
+      >
+        <hollow-dots-spinner :dot-size="15" :dots-num="3" color="#3498db" />
+      </button>
     </form>
     <modal
       :is-visible="isVisible"
@@ -78,24 +88,25 @@
         <p>{{ modal.body }}</p>
       </template>
       <template v-slot:confirm-button>
-        <button v-if="!isTransactionLoading">See Listings</button>
+        <button>See Listings</button>
       </template>
     </modal>
   </div>
 </template>
 <script>
 import { ref, reactive } from "vue";
-// import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import contract from "@/common/contract.js";
 import Modal from "@/components/util/Modal";
+import { HollowDotsSpinner } from "epic-spinners";
 export default {
   name: "Create",
   components: {
     Modal,
+    // ButtonLoader,
+    HollowDotsSpinner,
   },
   setup() {
-    // const store = useStore();
     const router = useRouter();
 
     const isTransactionLoading = ref(false);
@@ -137,20 +148,25 @@ export default {
     };
 
     const createListing = async () => {
-      isTransactionLoading.value = true;
-      setModal("Create Listing", "Creating");
-      let receipt = await contract.createListing(listing);
-      if (receipt == null) {
-        alert("Unable to create listing. Transaction cancelled.");
-        return;
+      try {
+        isTransactionLoading.value = true;
+        let receipt = await contract.createListing(listing);
+        if (receipt == null) {
+          alert("Unable to create listing. Transaction cancelled.");
+          isTransactionLoading.value = false;
+          return;
+        }
+        resetListing();
+        console.debug("receipt", receipt);
+        isTransactionLoading.value = false;
+        setModal(
+          "Create Listing Success",
+          `Transaction ID: ${receipt.transaction}`
+        );
+      } catch (e) {
+        isTransactionLoading.value = false;
+        alert(e);
       }
-      resetListing();
-      console.debug("receipt", receipt);
-      isTransactionLoading.value = false;
-      setModal(
-        "Create Listing Success",
-        `Transaction ID: ${receipt.transaction}`
-      );
     };
 
     const setModal = (title, body) => {

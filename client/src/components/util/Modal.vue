@@ -2,7 +2,7 @@
   <transition name="modal">
     <div v-if="isVisible">
       <div class="fixed inset-0 z-50 flex justify-center items-center">
-        <div class="flex flex-col md:w-1/5 rounded-lg shadow-lg bg-white">
+        <div class="flex flex-col min-w-min rounded-lg shadow-lg bg-white">
           <!-- header -->
           <div class="p-5">
             <div class="flex justify-between items-start">

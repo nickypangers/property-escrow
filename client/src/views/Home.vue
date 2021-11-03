@@ -30,17 +30,17 @@ export default {
     const router = useRouter();
 
     const isConnected = ref(false);
-
     const isVisible = ref(false);
 
     const connect = async () => {
       try {
         await initWeb3();
-        isConnected.value = true;
-        router.push("/app");
       } catch (e) {
         console.debug("error", e);
-        alert(e.message);
+        alert(e);
+      } finally {
+        isConnected.value = true;
+        router.push("/app");
       }
     };
 

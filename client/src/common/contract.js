@@ -25,13 +25,9 @@ export default {
     }
   },
   async getPropertyList() {
-    try {
-      let contract = store.state.contract;
-      return await contract.getPropertyList();
-    } catch (e) {
-      console.debug("error", e);
-      alert(e.message);
-    }
+    let contract = store.state.contract;
+    const propertyList = await contract.getPropertyList();
+    return propertyList;
   },
   async purchaseProperty(property) {
     console.debug("property", property.price);
@@ -46,7 +42,12 @@ export default {
       return { transaction: txReceipt.transactionHash };
     } catch (e) {
       console.debug("error", e);
-      alert(e.message);
+      throw e;
     }
+  },
+  async getPropertyDetail(id) {
+    let contract = store.state.contract;
+    const property = await contract.getPropertyDetail(id);
+    return property;
   },
 };

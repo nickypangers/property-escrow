@@ -172,6 +172,7 @@ contract PropertyEscrow {
 
                 properties[i].isSold = true;
                 properties[i].isActive = false;
+                properties[i].buyer = msg.sender;
 
                 address seller = properties[i].owner;
                 payable(seller).transfer(properties[i].price);

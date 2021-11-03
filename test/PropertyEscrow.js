@@ -51,7 +51,9 @@ describe("PropertyEscrow contract", function () {
     beforeEach(async function () {
       [owner, addr1] = await ethers.getSigners();
 
-      const propertiesLength = await propertyEscrow.getPropertyLength();
+      const propertiesLength = await propertyEscrow
+        .connect(owner)
+        .getPropertyLength();
       expect(propertiesLength).to.equal(0);
       await propertyEscrow.createListing(
         "Flat H, 20/F, Block 16",
@@ -123,6 +125,8 @@ describe("PropertyEscrow contract", function () {
         .payProperty(1, { from: addr1.address, value: 1 });
       const isSold = await propertyEscrow.getPropertyIsActive(1);
       expect(isSold).to.be.equal(false);
+      const property = await propertyEscrow.getPropertyDetail(1);
+      expect(property.buyer).to.equal(addr1.address);
     });
 
     it("Get property should return property", async function () {
