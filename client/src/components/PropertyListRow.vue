@@ -13,7 +13,7 @@
       </a>
     </td>
 
-    <td>{{ ethers.utils.formatEther(property.price) }} ETH</td>
+    <td>{{ formatEtherBalance(property.price, 18) }} ETH</td>
     <td>
       <button class="p-2 bg-blue-200 rounded-xl" @click="goToPropertyDetail">
         View More
@@ -26,10 +26,16 @@
       <div v-if="!isPurchaseLoading">
         <button
           class="p-2 bg-blue-200 rounded-xl"
-          v-if="!property.isSold"
+          v-if="!property.isSold && !isOwner"
           @click="purchaseProperty(property)"
         >
           Purchase
+        </button>
+        <button
+          class="p-2 bg-blue-200 rounded-xl"
+          v-if="!property.isSold && isOwner"
+        >
+          Edit
         </button>
         <button
           class="p-2 bg-gray-200 rounded-xl cursor-default"
@@ -42,11 +48,13 @@
   </tr>
 </template>
 <script>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { ethers } from "ethers";
 import contract from "@/common/contract.js";
+import { formatEtherBalance } from "@/common/web3.js";
 import { HollowDotsSpinner } from "epic-spinners";
 import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 export default {
   props: {
     property: {
@@ -60,8 +68,13 @@ export default {
   },
   setup(props, { emit }) {
     const router = useRouter();
+    const store = useStore();
 
     const isPurchaseLoading = ref(false);
+
+    const isOwner = computed(() => {
+      return props.property.owner === store.state.accounts[0];
+    });
 
     const getEtherscanLink = (address) => {
       return "https://ropsten.etherscan.io/address/" + address;
@@ -93,6 +106,8 @@ export default {
       purchaseProperty,
       isPurchaseLoading,
       goToPropertyDetail,
+      isOwner,
+      formatEtherBalance,
     };
   },
 };

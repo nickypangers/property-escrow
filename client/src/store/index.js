@@ -9,12 +9,6 @@ export default createStore({
     accounts: [],
     balance: 0,
   },
-  // getters: {
-  //   provider: (state) => state.provider,
-  //   signer: (state) => state.signer,
-  //   contract: (state) => state.contract,
-  //   address: (state) => state.address,
-  // },
   mutations: {
     setIsLoading(state, isLoading) {
       state.isLoading = isLoading;

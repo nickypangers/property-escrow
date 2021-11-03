@@ -112,8 +112,12 @@ export const getBalance = async () => {
   }
 
   let balance = await provider.getBalance(store.state.accounts[0]);
-  let formattedBalance = Number(ethers.utils.formatEther(balance));
-  console.debug("formattedBalance", formattedBalance);
+  // let formattedBalance = Number(ethers.utils.formatEther(balance));
+  console.debug("formattedBalance", balance);
   // return Number(formattedBalance).toFixed(2);
-  store.commit("setBalance", formattedBalance);
+  store.commit("setBalance", balance);
+};
+
+export const formatEtherBalance = (balance, dp = 2) => {
+  return Number(ethers.utils.formatEther(balance)).toFixed(dp);
 };

@@ -31,7 +31,7 @@ import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import contract from "@/common/contract.js";
-import { getBalance } from "@/common/web3.js";
+import { getBalance, formatEtherBalance } from "@/common/web3.js";
 import PropertyListTable from "@/components/PropertyListTable";
 import Loader from "@/components/util/Loader";
 export default {
@@ -45,7 +45,7 @@ export default {
     const router = useRouter();
 
     const propertyList = ref([]);
-    const balance = computed(() => store.state.balance.toFixed(2));
+    const balance = computed(() => formatEtherBalance(store.state.balance, 5));
 
     const isPropertyListLoaded = ref(false);
 
