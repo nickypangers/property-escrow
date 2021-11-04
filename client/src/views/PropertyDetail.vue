@@ -7,6 +7,11 @@
       v-if="property != null"
       class="flex flex-col align-center justify-center"
     >
+      <div class="pb-5 text-right">
+        <button class="p-3 rounded-xl bg-gray-200" @click="router.go(-1)">
+          Back
+        </button>
+      </div>
       <!-- <pre>{{ property.isSold }}</pre> -->
       <table class="table-auto border-collapse border border-green-800">
         <tr>
@@ -43,24 +48,12 @@
         </tr>
         <tr>
           <th>Seller</th>
-          <td>
-            <a
-              :href="getEtherscanLink(property.owner)"
-              target="_blank"
-              rel="noopener noreferrer"
-              >{{ property.owner }}</a
-            >
-          </td>
+          <td>{{ concealAddress(property.owner) }}</td>
         </tr>
         <tr v-if="property.isSold">
           <th>Buyer</th>
           <td>
-            <a
-              :href="getEtherscanLink(property.buyer)"
-              target="_blank"
-              rel="noopener noreferrer"
-              >{{ property.buyer }}</a
-            >
+            {{ concealAddress(property.buyer) }}
           </td>
         </tr>
         <tr>
@@ -69,32 +62,74 @@
         </tr>
       </table>
       <div class="mt-3 text-left">
-        <button class="mr-3 p-3 rounded-xl bg-blue-200" v-if="!property.isSold">
-          Purchase
+        <template v-if="!property.isSold && !isOwner">
+          <button
+            class="mr-3 p-3 rounded-xl bg-blue-200"
+            v-if="!isPurchaseLoading"
+            @click="purchaseProperty"
+          >
+            <p>Purchase</p>
+          </button>
+          <button
+            class="mr-3 p-3 rounded-xl bg-blue-200"
+            v-if="isPurchaseLoading"
+          >
+            <hollow-dots-spinner :dot-size="15" :dots-num="3" color="#3498db" />
+          </button>
+        </template>
+
+        <button
+          class="mr-3 p-3 rounded-xl bg-gray-200 cursor-normal"
+          v-if="property.isSold && !isOwner"
+        >
+          Sold
         </button>
         <button class="p-3 rounded-xl bg-blue-200" v-if="isOwner">Edit</button>
       </div>
     </div>
+    <modal
+      :is-visible="showModal"
+      @cancel="closeModal"
+      @confirm="router.push('/app')"
+    >
+      <template v-slot:title>{{ modal.title }}</template>
+      <template v-slot:body>
+        <p>{{ modal.body }}</p>
+      </template>
+      <template v-slot:confirm-button>
+        <button>See Listings</button>
+      </template>
+    </modal>
   </section>
 </template>
 <script>
-import { useRoute } from "vue-router";
-import { ref, computed, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { ref, reactive, computed, onMounted } from "vue";
 import contract from "@/common/contract.js";
 import { HollowDotsSpinner } from "epic-spinners";
 import { formatEtherBalance } from "@/common/web3.js";
 import { useStore } from "vuex";
+import { concealAddress } from "@/common/strings.js";
+import Modal from "@/components/util/Modal";
 
 export default {
   name: "PropertyDetail",
   components: {
     HollowDotsSpinner,
+    Modal,
   },
   setup() {
     const route = useRoute();
+    const router = useRouter();
     const store = useStore();
 
+    const isPurchaseLoading = ref(false);
+    const showModal = ref(false);
     const property = ref(null);
+    const modal = reactive({
+      title: "",
+      body: "",
+    });
 
     const isOwner = computed(() => {
       return store.state.accounts[0] === property.value.owner;
@@ -104,19 +139,60 @@ export default {
       return "https://ropsten.etherscan.io/address/" + address;
     };
 
-    onMounted(() => {
-      console.log(route.params.id);
+    const getPropertyDeatil = (callback) => {
       contract.getPropertyDetail(route.params.id).then((res) => {
         console.log(res);
         property.value = res;
+        callback;
       });
+    };
+
+    const setModal = (title, body) => {
+      modal.title = title;
+      modal.body = body;
+      showModal.value = true;
+    };
+
+    const closeModal = () => {
+      showModal.value = false;
+    };
+
+    const purchaseProperty = async () => {
+      try {
+        isPurchaseLoading.value = true;
+        let receipt = await contract.purchaseProperty(property.value);
+        console.log(receipt);
+
+        getPropertyDeatil(() => {
+          isPurchaseLoading.value = false;
+          setModal(
+            "Purchase Success",
+            `Transaction ID: ${receipt.transaction}`
+          );
+        });
+      } catch (e) {
+        console.log(e);
+        isPurchaseLoading.value = false;
+        alert(e.message);
+      }
+    };
+
+    onMounted(() => {
+      console.log(route.params.id);
+      getPropertyDeatil();
     });
     return {
+      router,
       route,
       property,
       formatEtherBalance,
       getEtherscanLink,
       isOwner,
+      concealAddress,
+      purchaseProperty,
+      isPurchaseLoading,
+      closeModal,
+      showModal,
     };
   },
 };

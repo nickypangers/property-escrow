@@ -1,6 +1,11 @@
 <template>
   <div class="container mx-auto px-20">
-    <div>Create Listing</div>
+    <div class="flex justify-between items-end py-3">
+      <h1 class="font-bold">Create Listing</h1>
+      <button class="p-3 rounded-xl bg-gray-200" @click="router.go(-1)">
+        Back
+      </button>
+    </div>
     <form @submit.prevent="createListing" class="w-full flex flex-col">
       <input
         type="text"

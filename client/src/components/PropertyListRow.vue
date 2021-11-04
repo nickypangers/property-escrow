@@ -4,13 +4,7 @@
     <td>{{ property.name }}</td>
     <td>{{ property.propertyAddress.country }}</td>
     <td>
-      <a
-        :href="getEtherscanLink(property.owner)"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {{ property.owner }}
-      </a>
+      {{ concealAddress(property.owner) }}
     </td>
 
     <td>{{ formatEtherBalance(property.price, 18) }} ETH</td>
@@ -55,6 +49,8 @@ import { formatEtherBalance } from "@/common/web3.js";
 import { HollowDotsSpinner } from "epic-spinners";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
+import { concealAddress } from "@/common/strings.js";
+
 export default {
   props: {
     property: {
@@ -108,6 +104,7 @@ export default {
       goToPropertyDetail,
       isOwner,
       formatEtherBalance,
+      concealAddress,
     };
   },
 };
