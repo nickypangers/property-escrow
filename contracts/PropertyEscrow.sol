@@ -118,6 +118,29 @@ contract PropertyEscrow {
         return property.id;
     }
 
+    function editProperty(
+        uint256 _id,
+        string memory name,
+        string memory description,
+        uint256 price
+    ) public onlyPropertyOwner(_id) returns (bool) {
+        for (uint256 i = 0; i < properties.length; i = i + 1) {
+            if (properties[i].id == _id) {
+                require(
+                    properties[i].isActive == true,
+                    "Property is not active"
+                );
+                require(properties[i].isSold == false, "Property is sold");
+
+                properties[i].name = name;
+                properties[i].description = description;
+                properties[i].price = price;
+                return true;
+            }
+        }
+        revert("Property not found");
+    }
+
     function getPropertyPrice(uint256 _id) public view returns (uint256) {
         Property memory property = getProperty(_id);
 

@@ -61,7 +61,7 @@
           <td>{{ formatEtherBalance(property.price, 18) }} ETH</td>
         </tr>
       </table>
-      <div class="mt-3 text-left">
+      <div class="mt-3 text-left" v-if="!property.isSold">
         <template v-if="!property.isSold && !isOwner">
           <button
             class="mr-3 p-3 rounded-xl bg-blue-200"
@@ -84,7 +84,13 @@
         >
           Sold
         </button>
-        <button class="p-3 rounded-xl bg-blue-200" v-if="isOwner">Edit</button>
+        <button
+          class="p-3 rounded-xl bg-blue-200"
+          v-if="!property.isSold && property.isActive && isOwner"
+          @click="router.push(`/app/edit/${property.id}`)"
+        >
+          Edit
+        </button>
       </div>
     </div>
     <modal

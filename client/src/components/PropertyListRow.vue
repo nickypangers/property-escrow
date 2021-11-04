@@ -28,6 +28,7 @@
         <button
           class="p-2 bg-blue-200 rounded-xl"
           v-if="!property.isSold && isOwner"
+          @click="router.push(`/app/edit/${property.id}`)"
         >
           Edit
         </button>

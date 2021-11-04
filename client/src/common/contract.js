@@ -50,4 +50,21 @@ export default {
     const property = await contract.getPropertyDetail(id);
     return property;
   },
+  async editProperty(property) {
+    try {
+      let contract = store.state.contract;
+      const txResponse = contract.editProperty(
+        property.id,
+        property.name,
+        property.description,
+        property.price
+      );
+      const txReceipt = await txResponse.wait();
+      console.debug("txReceipt", txReceipt);
+      return { transaction: txReceipt.transactionHash };
+    } catch (e) {
+      console.debug("error", e);
+      throw e;
+    }
+  },
 };

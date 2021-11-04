@@ -157,5 +157,20 @@ describe("PropertyEscrow contract", function () {
       const propertyList = await propertyEscrow.getPropertyList();
       expect(propertyList.length).to.equal(1);
     });
+
+    it("Edit property should return property with new information", async function () {
+      const property = await propertyEscrow.getPropertyDetail(1);
+      expect(property.name).to.equal("PI1620H");
+      await propertyEscrow.editProperty(
+        1,
+        "PI1620H Edit",
+        "Some Description Edit",
+        3
+      );
+      const newProperty = await propertyEscrow.getPropertyDetail(1);
+      expect(newProperty.name).to.equal("PI1620H Edit");
+      expect(newProperty.description).to.equal("Some Description Edit");
+      expect(newProperty.price).to.equal(3);
+    });
   });
 });

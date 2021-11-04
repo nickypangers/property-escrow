@@ -2,8 +2,9 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
 import App from "../views/App.vue";
 import AppHome from "../views/app/Home.vue";
-import Create from "../views/Create.vue";
-import PropertyDetail from "../views/PropertyDetail.vue";
+import Create from "../views/app/Create.vue";
+import Edit from "../views/app/Edit.vue";
+import PropertyDetail from "../views/app/PropertyDetail.vue";
 import store from "@/store/index.js";
 
 const routes = [
@@ -38,6 +39,11 @@ const routes = [
         path: "detail/:id",
         name: "PropertyDetail",
         component: PropertyDetail,
+      },
+      {
+        path: "edit/:id",
+        name: "Edit",
+        component: Edit,
       },
     ],
   },
