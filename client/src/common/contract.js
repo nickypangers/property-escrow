@@ -81,13 +81,15 @@ export default {
   async editProperty(property) {
     try {
       let contract = store.state.contract;
-      const status = contract.editProperty(
+      const txResponse = await contract.editProperty(
         property.id,
         property.name,
         property.description,
         ethers.utils.parseEther(`${property.price}`, "ether")
       );
-      return status;
+      const txReceipt = await txResponse.wait();
+      console.debug("txReceipt", txReceipt);
+      return { transaction: txReceipt.transactionHash };
     } catch (e) {
       console.debug("error", e);
       throw e;
