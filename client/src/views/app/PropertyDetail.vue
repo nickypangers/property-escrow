@@ -58,7 +58,7 @@
         </tr>
         <tr>
           <th>Listed Price</th>
-          <td>{{ formatEtherBalance(property.price, 18) }} ETH</td>
+          <td>{{ property.price }} ETH</td>
         </tr>
       </table>
       <div class="mt-3 text-left" v-if="!property.isSold">

@@ -6,6 +6,7 @@ import Create from "../views/app/Create.vue";
 import Edit from "../views/app/Edit.vue";
 import PropertyDetail from "../views/app/PropertyDetail.vue";
 import store from "@/store/index.js";
+// import contract from "@/common/contract.js";
 
 const routes = [
   {
@@ -44,18 +45,22 @@ const routes = [
         path: "edit/:id",
         name: "Edit",
         component: Edit,
+        beforeEnter: async (to, from, next) => {
+          let id = to.params.id;
+          let contract = store.state.contract;
+          const propertyDetail = await contract.getPropertyDetail(id);
+          if (propertyDetail.owner != store.state.accounts[0]) {
+            next(false);
+            return;
+          }
+          if (!propertyDetail.isActive) {
+            next(false);
+            return;
+          }
+          next();
+        },
       },
     ],
-  },
-
-  {
-    path: "/about",
-    name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue"),
   },
 ];
 

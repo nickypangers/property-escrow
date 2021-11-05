@@ -28,7 +28,7 @@
         <button
           class="p-2 bg-blue-200 rounded-xl"
           v-if="!property.isSold && isOwner"
-          @click="router.push(`/app/edit/${property.id}`)"
+          @click="goToEdit"
         >
           Edit
         </button>
@@ -77,6 +77,10 @@ export default {
       return "https://ropsten.etherscan.io/address/" + address;
     };
 
+    const goToEdit = () => {
+      router.push({ name: "Edit", params: { id: props.property.id } });
+    };
+
     const goToPropertyDetail = () => {
       router.push({
         name: "PropertyDetail",
@@ -106,6 +110,7 @@ export default {
       isOwner,
       formatEtherBalance,
       concealAddress,
+      goToEdit,
     };
   },
 };

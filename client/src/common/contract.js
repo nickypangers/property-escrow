@@ -1,17 +1,18 @@
 import store from "@/store/index.js";
 import { ethers } from "ethers";
+import { formatEtherBalance } from "./web3.js";
 
 export default {
   async createListing(listing) {
     try {
       let contract = store.state.contract;
       const txResponse = await contract.createListing(
-        listing.address1,
-        listing.address2,
-        listing.city,
-        listing.region,
-        listing.postcode,
-        listing.country,
+        listing.propertyAddress.address1,
+        listing.propertyAddress.address2,
+        listing.propertyAddress.city,
+        listing.propertyAddress.province,
+        listing.propertyAddress.postcode,
+        listing.propertyAddress.country,
         listing.name,
         listing.description,
         ethers.utils.parseEther(`${listing.price}`, "ether")
@@ -47,21 +48,46 @@ export default {
   },
   async getPropertyDetail(id) {
     let contract = store.state.contract;
-    const property = await contract.getPropertyDetail(id);
+    let property = {
+      id: "",
+      name: "",
+      description: "",
+      price: "",
+      propertyAddress: {
+        address1: "",
+        address2: "",
+        city: "",
+        province: "",
+        postcode: "",
+        country: "",
+      },
+      owner: "",
+      buyer: "",
+      isActive: "",
+      isSold: "",
+    };
+    var propertyDetail = await contract.getPropertyDetail(id);
+    for (const [key] of Object.entries(property)) {
+      for (const [pdKey, pdValue] of Object.entries(propertyDetail)) {
+        if (key == pdKey) {
+          property[key] = pdValue;
+        }
+      }
+    }
+    property.price = formatEtherBalance(property.price, 18);
+    console.debug("property", property);
     return property;
   },
   async editProperty(property) {
     try {
       let contract = store.state.contract;
-      const txResponse = contract.editProperty(
+      const status = contract.editProperty(
         property.id,
         property.name,
         property.description,
-        property.price
+        ethers.utils.parseEther(`${property.price}`, "ether")
       );
-      const txReceipt = await txResponse.wait();
-      console.debug("txReceipt", txReceipt);
-      return { transaction: txReceipt.transactionHash };
+      return status;
     } catch (e) {
       console.debug("error", e);
       throw e;

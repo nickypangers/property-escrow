@@ -1,105 +1,22 @@
 <template>
   <div class="container mx-auto px-20">
     <div class="flex justify-between items-end py-3">
-      <h1 class="font-bold">Create Listing</h1>
+      <h1 class="font-bold">Edit Listing</h1>
       <button class="p-3 rounded-xl bg-gray-200" @click="router.go(-1)">
         Back
       </button>
     </div>
-    <form @submit.prevent="createListing" class="w-full flex flex-col">
-      <input
-        type="text"
-        name="address1"
-        id="address1"
-        v-model="property.propertyAddress.address1"
-        placeholder="Address 1"
-        disabled
-      />
-      <input
-        type="text"
-        name="address2"
-        id="address2"
-        v-model="property.propertyAddress.address2"
-        placeholder="Address 2"
-        disabled
-      />
-      <input
-        type="text"
-        name="city"
-        id="city"
-        v-model="property.propertyAddress.city"
-        placeholder="City"
-        disabled
-      />
-      <input
-        type="text"
-        name="region"
-        id="region"
-        v-model="property.propertyAddress.region"
-        placeholder="Region"
-        disabled
-      />
-      <input
-        type="text"
-        name="postcode"
-        id="postcode"
-        v-model="property.propertyAddress.postcode"
-        placeholder="Postcode"
-        disabled
-      />
-      <select
-        name="country"
-        id="country"
-        v-model="property.propertyAddress.country"
-        disabled
-      >
-        <option
-          v-for="(country, index) in countryList"
-          :key="'country-' + index"
-          :value="country"
-        >
-          {{ country }}
-        </option>
-      </select>
-      <!-- <pre>{{ countries }}</pre> -->
-      <input
-        type="text"
-        name="name"
-        id="name"
-        v-model="property.name"
-        placeholder="Name"
-      />
-      <input
-        type="text"
-        name="description"
-        id="description"
-        v-model="property.description"
-        placeholder="Description"
-      />
-      <input
-        type="number"
-        name="price"
-        id="price"
-        step="any"
-        v-model="property.price"
-        placeholder="Price"
-      />
-      <input
-        type="submit"
-        value="Edit Listing"
-        v-show="!isTransactionLoading"
-      />
-      <button
-        class="w-full flex justify-center mt-3 py-3"
-        v-show="isTransactionLoading"
-      >
-        <hollow-dots-spinner :dot-size="15" :dots-num="3" color="#3498db" />
-      </button>
-    </form>
+    <property-form
+      v-model="listing"
+      :callback="editProperty"
+      submit-text="Edit"
+      :is-transaction-loading="isTransactionLoading"
+      :is-edit="true"
+    />
     <modal
-      :is-visible="showModal"
+      :is-visible="isVisible"
       @cancel="closeModal"
-      @confirm="router.push(`/`)"
+      @confirm="router.push('/app')"
     >
       <template v-slot:title>{{ modal.title }}</template>
       <template v-slot:body>
@@ -113,53 +30,85 @@
 </template>
 <script>
 import { ref, reactive, computed, onMounted } from "vue";
-import { useRouter, useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import contract from "@/common/contract.js";
 import Modal from "@/components/util/Modal";
-import { HollowDotsSpinner } from "epic-spinners";
+// import { HollowDotsSpinner } from "epic-spinners";
 import countries from "@/assets/data/countries.json";
+import PropertyForm from "@/components/PropertyForm";
 export default {
-  name: "Edit",
+  name: "Create",
   components: {
     Modal,
-    HollowDotsSpinner,
+    PropertyForm,
   },
   setup() {
     const router = useRouter();
     const route = useRoute();
-    const countryList = computed(() => countries.sort());
-    const property = ref({});
+    const listing = ref({
+      propertyAddress: {
+        address1: "",
+        address2: "",
+        city: "",
+        province: "",
+        postcode: "",
+        country: "",
+      },
+      name: "",
+      description: "",
+      price: "",
+    });
+    const countryList = computed(() => {
+      return countries.sort();
+    });
+    const isPropertyLoaded = ref(false);
     const isTransactionLoading = ref(false);
-    const showModal = ref(false);
     const modal = reactive({
       title: "",
       body: "",
     });
-
+    const isVisible = ref(false);
+    const closeModal = () => {
+      isVisible.value = false;
+    };
     const setModal = (title, body) => {
       modal.title = title;
       modal.body = body;
-      showModal.value = true;
+      isVisible.value = true;
     };
 
-    const closeModal = () => {
-      showModal.value = false;
+    const editProperty = async () => {
+      try {
+        isTransactionLoading.value = true;
+        const status = await contract.editProperty(listing.value);
+        isTransactionLoading.value = false;
+        if (status === false) {
+          alert("Unable to edit property");
+          return;
+        }
+        setModal("Edit Property Success", `Property has been edited.`);
+      } catch (e) {
+        isTransactionLoading.value = false;
+        alert(e);
+      }
     };
 
-    onMounted(() => {
-      contract.getPropertyDetail(route.params.id).then((res) => {
-        property.value = res;
-      });
+    onMounted(async () => {
+      listing.value = await contract.getPropertyDetail(route.params.id);
+      // console.log(listing.value);
     });
 
     return {
       router,
       countryList,
-      property,
-      isTransactionLoading,
-      showModal,
+      listing,
+      isPropertyLoaded,
       closeModal,
       setModal,
+      isVisible,
+      isTransactionLoading,
+      editProperty,
+      modal,
     };
   },
 };
@@ -168,5 +117,9 @@ export default {
 input,
 select {
   @apply w-full border p-3;
+}
+
+label {
+  @apply mt-3;
 }
 </style>
