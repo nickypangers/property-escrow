@@ -58,7 +58,7 @@
         </tr>
         <tr>
           <th>Listed Price</th>
-          <td>{{ property.price }} ETH</td>
+          <td>{{ price }} ETH</td>
         </tr>
       </table>
       <div class="mt-3 text-left" v-if="!property.isSold">
@@ -137,6 +137,10 @@ export default {
       body: "",
     });
 
+    const price = computed(() => {
+      return formatEtherBalance(property.value.price, 18);
+    });
+
     const isOwner = computed(() => {
       return store.state.accounts[0] === property.value.owner;
     });
@@ -147,7 +151,7 @@ export default {
 
     const getPropertyDeatil = (callback) => {
       contract.getPropertyDetail(route.params.id).then((res) => {
-        console.log(res);
+        // console.log(res);
         property.value = res;
         callback;
       });
@@ -177,14 +181,13 @@ export default {
           );
         });
       } catch (e) {
-        console.log(e);
         isPurchaseLoading.value = false;
         alert(e.message);
       }
     };
 
     onMounted(() => {
-      console.log(route.params.id);
+      // console.log(route.params.id);
       getPropertyDeatil();
     });
     return {
@@ -199,6 +202,7 @@ export default {
       isPurchaseLoading,
       closeModal,
       showModal,
+      price,
     };
   },
 };

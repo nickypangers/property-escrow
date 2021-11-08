@@ -6,7 +6,7 @@ const getContractAddress = () => "0xa5976854eebcAb98afb849C034f9966f44cf5892";
 
 const connectToWeb3 = () => {
   const provider = getProvider();
-  console.debug("provider", provider);
+  // console.debug("provider", provider);
   if (provider == null) {
     throw "Provider not found";
   }
@@ -34,7 +34,7 @@ const getAccounts = async () => {
     throw "No accounts";
   }
 
-  console.debug("accounts", accounts);
+  // console.debug("accounts", accounts);
   store.commit("setAccounts", accounts);
 };
 
@@ -49,7 +49,7 @@ const getSigner = () => {
   if (signer == undefined || signer == null) {
     throw "No signer";
   }
-  console.debug("signer", signer);
+  // console.debug("signer", signer);
   return signer;
 };
 
@@ -64,7 +64,7 @@ export const getContract = async () => {
     PropertyEscrowContract.abi,
     provider
   );
-  console.debug("readOnlyContract", readOnlyContract);
+  // console.debug("readOnlyContract", readOnlyContract);
   store.commit("setReadOnlyContract", readOnlyContract);
 
   let signer = getSigner();
@@ -77,12 +77,12 @@ export const getContract = async () => {
     PropertyEscrowContract.abi,
     signer
   );
-  console.debug("contract", contract);
+  // console.debug("contract", contract);
   store.commit("setContract", contract);
 
   let contractSigner = contract.connect(signer);
 
-  console.debug("contractSigner", contractSigner);
+  // console.debug("contractSigner", contractSigner);
   store.commit("setContractSigner", contractSigner);
 };
 
@@ -113,7 +113,7 @@ export const getBalance = async () => {
 
   let balance = await provider.getBalance(store.state.accounts[0]);
   // let formattedBalance = Number(ethers.utils.formatEther(balance));
-  console.debug("formattedBalance", balance);
+  // console.debug("formattedBalance", balance);
   // return Number(formattedBalance).toFixed(2);
   store.commit("setBalance", balance);
 };

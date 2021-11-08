@@ -91,8 +91,8 @@ export default {
     const purchaseProperty = async (property) => {
       try {
         isPurchaseLoading.value = true;
-        let transaction = await contract.purchaseProperty(property);
-        console.log(transaction);
+        await contract.purchaseProperty(property);
+        // console.log(transaction);
         emit("success");
         isPurchaseLoading.value = false;
       } catch (e) {

@@ -1,6 +1,6 @@
 import store from "@/store/index.js";
 import { ethers } from "ethers";
-import { formatEtherBalance } from "./web3.js";
+// import { formatEtherBalance } from "./web3.js";
 
 export default {
   async createListing(listing) {
@@ -18,10 +18,10 @@ export default {
         ethers.utils.parseEther(`${listing.price}`, "ether")
       );
       const txReceipt = await txResponse.wait();
-      console.debug("txReceipt", txReceipt);
+      // console.debug("txReceipt", txReceipt);
       return { transaction: txReceipt.transactionHash };
     } catch (e) {
-      console.debug("error", e);
+      // console.debug("error", e);
       alert(e.message);
     }
   },
@@ -31,20 +31,15 @@ export default {
     return propertyList;
   },
   async purchaseProperty(property) {
-    console.debug("property", property.price);
-    try {
-      let contract = store.state.contract;
-      const txResponse = await contract.payProperty(property.id, {
-        from: store.state.accounts[0],
-        value: property.price,
-      });
-      const txReceipt = await txResponse.wait();
-      console.debug("txReceipt", txReceipt);
-      return { transaction: txReceipt.transactionHash };
-    } catch (e) {
-      console.debug("error", e);
-      throw e;
-    }
+    // console.debug("property", property.price);
+    let contract = store.state.contract;
+    const txResponse = await contract.payProperty(property.id, {
+      from: store.state.accounts[0],
+      value: property.price,
+    });
+    const txReceipt = await txResponse.wait();
+    // console.debug("txReceipt", txReceipt);
+    return { transaction: txReceipt.transactionHash };
   },
   async getPropertyDetail(id) {
     let contract = store.state.contract;
@@ -74,23 +69,18 @@ export default {
         }
       }
     }
-    property.price = formatEtherBalance(property.price, 18);
-    console.debug("property", property);
+    // property.price = formatEtherBalance(property.price, 18);
+    // console.debug("property", property);
     return property;
   },
   async editProperty(property) {
-    try {
-      let contract = store.state.contract;
-      const status = contract.editProperty(
-        property.id,
-        property.name,
-        property.description,
-        ethers.utils.parseEther(`${property.price}`, "ether")
-      );
-      return status;
-    } catch (e) {
-      console.debug("error", e);
-      throw e;
-    }
+    let contract = store.state.contract;
+    const status = contract.editProperty(
+      property.id,
+      property.name,
+      property.description,
+      ethers.utils.parseEther(`${property.price}`, "ether")
+    );
+    return status;
   },
 };
