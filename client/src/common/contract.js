@@ -74,13 +74,20 @@ export default {
     return property;
   },
   async editProperty(property) {
-    let contract = store.state.contract;
-    const status = contract.editProperty(
-      property.id,
-      property.name,
-      property.description,
-      ethers.utils.parseEther(`${property.price}`, "ether")
-    );
-    return status;
+    try {
+      let contract = store.state.contract;
+      const txResponse = await contract.editProperty(
+        property.id,
+        property.name,
+        property.description,
+        ethers.utils.parseEther(`${property.price}`, "ether")
+      );
+      const txReceipt = await txResponse.wait();
+      // console.debug("txReceipt", txReceipt);
+      return { transaction: txReceipt.transactionHash };
+    } catch (e) {
+      console.debug("error", e);
+      throw e;
+    }
   },
 };

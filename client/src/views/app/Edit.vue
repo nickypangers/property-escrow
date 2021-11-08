@@ -80,21 +80,25 @@ export default {
     const editProperty = async () => {
       try {
         isTransactionLoading.value = true;
-        const status = await contract.editProperty(listing.value);
+        const transaction = await contract.editProperty(listing.value);
         isTransactionLoading.value = false;
-        if (status === false) {
-          alert("Unable to edit property");
-          return;
-        }
-        setModal("Edit Property Success", `Property has been edited.`);
+        setModal(
+          "Success",
+          `Property edited successfully. Transaction ID: ${transaction.transaction}`
+        );
+        getPropertyDetail();
       } catch (e) {
         isTransactionLoading.value = false;
         alert(e);
       }
     };
 
-    onMounted(async () => {
+    const getPropertyDetail = async () => {
       listing.value = await contract.getPropertyDetail(route.params.id);
+    };
+
+    onMounted(async () => {
+      getPropertyDetail();
       // console.log(listing.value);
     });
 
