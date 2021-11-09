@@ -12,6 +12,7 @@
       submit-text="Edit"
       :is-transaction-loading="isTransactionLoading"
       :is-edit="true"
+      v-if="hasProperty"
     />
     <modal
       :is-visible="isVisible"
@@ -33,7 +34,6 @@ import { ref, reactive, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import contract from "@/common/contract.js";
 import Modal from "@/components/util/Modal";
-// import { HollowDotsSpinner } from "epic-spinners";
 import countries from "@/assets/data/countries.json";
 import PropertyForm from "@/components/PropertyForm";
 export default {
@@ -45,19 +45,20 @@ export default {
   setup() {
     const router = useRouter();
     const route = useRoute();
-    const listing = ref({
-      propertyAddress: {
-        address1: "",
-        address2: "",
-        city: "",
-        province: "",
-        postcode: "",
-        country: "",
-      },
-      name: "",
-      description: "",
-      price: "",
-    });
+    const listing = ref({});
+    //   {
+    //   propertyAddress: {
+    //     address1: "",
+    //     address2: "",
+    //     city: "",
+    //     province: "",
+    //     postcode: "",
+    //     country: "",
+    //   },
+    //   name: "",
+    //   description: "",
+    //   price: "",
+    // });
     const countryList = computed(() => {
       return countries.sort();
     });
@@ -95,11 +96,13 @@ export default {
 
     const getPropertyDetail = async () => {
       listing.value = await contract.getPropertyDetail(route.params.id);
+      hasProperty.value = true;
     };
 
+    const hasProperty = ref(false);
+
     onMounted(async () => {
-      getPropertyDetail();
-      // console.log(listing.value);
+      await getPropertyDetail();
     });
 
     return {
@@ -113,6 +116,7 @@ export default {
       isTransactionLoading,
       editProperty,
       modal,
+      hasProperty,
     };
   },
 };

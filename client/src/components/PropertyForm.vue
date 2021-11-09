@@ -83,7 +83,8 @@
 import { computed } from "vue";
 import countries from "@/assets/data/countries.json";
 import { HollowDotsSpinner } from "epic-spinners";
-// import { formatEtherBalance } from "@/common/web3.js";
+import { formatEtherBalance } from "@/common/web3.js";
+import { ethers } from "ethers";
 
 export default {
   name: "PropertyForm",
@@ -93,21 +94,6 @@ export default {
   props: {
     modelValue: {
       type: Object,
-      default: () => {
-        return {
-          propertyAddress: {
-            address1: "",
-            address2: "",
-            city: "",
-            province: "",
-            postcode: "",
-            country: "Afghanistan",
-          },
-          name: "",
-          description: "",
-          price: "",
-        };
-      },
     },
     isTransactionLoading: Boolean,
     submitText: {
@@ -123,9 +109,11 @@ export default {
   emits: ["update:modelValue"],
   setup(props, { emit }) {
     const price = computed({
-      get: () => property.value.price,
+      get: () => {
+        return formatEtherBalance(property.value.price, 18);
+      },
       set: (val) => {
-        property.value.price = val;
+        property.value.price = ethers.utils.parseEther(val);
       },
     });
 
