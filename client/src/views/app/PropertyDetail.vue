@@ -103,7 +103,7 @@
         <p>{{ modal.body }}</p>
       </template>
       <template v-slot:confirm-button>
-        <button>See Listings</button>
+        <button v-show="modal.showConfirm">See Listings</button>
       </template>
     </modal>
   </section>
@@ -135,6 +135,7 @@ export default {
     const modal = reactive({
       title: "",
       body: "",
+      showConfirm: false,
     });
 
     const price = computed(() => {
@@ -157,9 +158,10 @@ export default {
       });
     };
 
-    const setModal = (title, body) => {
+    const setModal = (title, body, showConfirm = true) => {
       modal.title = title;
       modal.body = body;
+      modal.showConfirm = showConfirm;
       showModal.value = true;
     };
 
@@ -182,7 +184,7 @@ export default {
         });
       } catch (e) {
         isPurchaseLoading.value = false;
-        alert(e.message);
+        setModal("Purchase Failed", e.code, false);
       }
     };
 
@@ -203,6 +205,7 @@ export default {
       closeModal,
       showModal,
       price,
+      modal,
     };
   },
 };
