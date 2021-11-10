@@ -83,7 +83,7 @@
 import { computed } from "vue";
 import countries from "@/assets/data/countries.json";
 import { HollowDotsSpinner } from "epic-spinners";
-import { formatEtherBalance } from "@/common/web3.js";
+// import { formatEtherBalance } from "@/common/web3.js";
 import { ethers } from "ethers";
 
 export default {
@@ -110,7 +110,8 @@ export default {
   setup(props, { emit }) {
     const price = computed({
       get: () => {
-        return formatEtherBalance(property.value.price, 18);
+        // return formatEtherBalance(property.value.price, 18);
+        return property.value.price;
       },
       set: (val) => {
         property.value.price = ethers.utils.parseEther(val);

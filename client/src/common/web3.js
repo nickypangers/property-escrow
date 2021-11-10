@@ -4,23 +4,20 @@ import store from "@/store/index.js";
 
 const getContractAddress = () => "0xa5976854eebcAb98afb849C034f9966f44cf5892";
 
-const connectToWeb3 = () => {
-  const provider = getProvider();
-  // console.debug("provider", provider);
-  if (provider == null) {
-    throw "Provider not found";
-  }
-  if (provider.network.name != "ropsten") {
-    throw "Wrong network";
+// const connectToWeb3 = async () => {
+//   const provider = getProvider();
+// };
+
+const getNetwork = async () => {
+  const network = await getProvider().getNetwork();
+  // console.debug("network", network);
+  if (network.name != "ropsten") {
+    throw new Error(`Please connect to ropsten. (Currently: ${network.name})`);
   }
 };
 
 const getProvider = () => {
-  const provider = new ethers.providers.Web3Provider(
-    window.ethereum,
-    "ropsten"
-  );
-  return provider;
+  return new ethers.providers.Web3Provider(window.ethereum, "any");
 };
 
 const getAccounts = async () => {
@@ -90,23 +87,18 @@ export const initWeb3 = async () => {
   if (window.ethereum == undefined) {
     throw "Please install metamask";
   }
-  await window.ethereum.request({ method: "eth_requestAccounts" });
-  try {
-    connectToWeb3();
-    await getAccounts();
-    // getSigner();
-    await getContract();
-  } catch (e) {
-    console.error("testing");
-    throw e;
-  }
+  await window.ethereum.request({
+    method: "eth_requestAccounts",
+  });
+  // await connectToWeb3();
+  await getNetwork();
+  await getAccounts();
+  // getSigner();
+  await getContract();
 };
 
 export const getBalance = async () => {
-  const provider = new ethers.providers.Web3Provider(
-    window.ethereum,
-    "ropsten"
-  );
+  const provider = getProvider();
   if (provider == null) {
     throw "Provider not found";
   }
