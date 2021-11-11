@@ -7,8 +7,15 @@
       v-if="property != null"
       class="flex flex-col align-center justify-center"
     >
-      <div class="pb-5 text-right">
-        <button class="p-3 rounded-xl bg-gray-200" @click="router.go(-1)">
+      <div class="pb-3 h-16 flex justify-between items-center">
+        <div class="bg-red-200 h-full w-full flex items-center px-3 mr-3">
+          Please do sufficient research on both the property and the owner
+          before purchasing.
+        </div>
+        <button
+          class="h-full px-3 rounded-xl bg-gray-200"
+          @click="router.go(-1)"
+        >
           Back
         </button>
       </div>

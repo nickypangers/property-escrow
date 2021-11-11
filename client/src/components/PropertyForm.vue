@@ -26,13 +26,27 @@
         :disabled="isEdit"
       />
       <label for="province">Province:</label>
-      <input
+      <!-- <input
         type="text"
         name="province"
         id="province"
         v-model="property.propertyAddress.province"
         :disabled="isEdit"
-      />
+      /> -->
+      <select
+        name="province"
+        id="province"
+        v-model="property.propertyAddress.province"
+        :disabled="isEdit"
+      >
+        <option
+          v-for="(province, index) in provinceList"
+          :key="'province-' + index"
+          :value="province"
+        >
+          {{ province }}
+        </option>
+      </select>
       <label for="postcode">Postcode:</label>
       <input
         type="text"
@@ -66,7 +80,7 @@
         v-model="property.description"
       />
       <label for="price">Price:</label>
-      <input type="number" name="price" id="price" step="any" v-model="price" />
+      <input type="text" name="price" id="price" v-model="price" />
       <input
         type="submit"
         class="mt-3"
@@ -80,11 +94,11 @@
   </div>
 </template>
 <script>
-import { computed } from "vue";
-import countries from "@/assets/data/countries.json";
+import { computed, watch, onMounted } from "vue";
+import countries from "@/assets/data/countries.min.json";
 import { HollowDotsSpinner } from "epic-spinners";
 // import { formatEtherBalance } from "@/common/web3.js";
-import { ethers } from "ethers";
+// import { ethers } from "ethers";
 
 export default {
   name: "PropertyForm",
@@ -114,7 +128,8 @@ export default {
         return property.value.price;
       },
       set: (val) => {
-        property.value.price = ethers.utils.parseEther(val);
+        console.log(val);
+        property.value.price = `${val}`;
       },
     });
 
@@ -126,12 +141,41 @@ export default {
       },
     });
 
-    const countryList = computed(() => countries.sort());
+    const propertyCountry = computed(
+      () => property.value.propertyAddress.country
+    );
+
+    const provinceList = computed(() => {
+      return countries[property.value.propertyAddress.country];
+    });
+
+    // const countryList = computed(() => countries.sort());
+    const countryList = computed(() => Object.keys(countries).sort());
+
+    watch(
+      propertyCountry,
+      (value, oldVal) => {
+        // console.debug("oldVal country", oldVal);
+        // console.debug("value country", value);
+        if (oldVal != value) {
+          property.value.propertyAddress.province = provinceList.value[0];
+        }
+      }
+      //   { deep: true }
+    );
+
+    onMounted(() => {
+      console.log(provinceList.value);
+      if (!props.isEdit) {
+        property.value.propertyAddress.province = provinceList.value[0];
+      }
+    });
 
     return {
       property,
       countryList,
       price,
+      provinceList,
     };
   },
 };
