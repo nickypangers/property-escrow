@@ -2,6 +2,7 @@ import { createStore } from "vuex";
 
 export default createStore({
   state: {
+    isConnected: false,
     isLoading: false,
     readOnlyContract: null,
     contract: null,
@@ -10,6 +11,9 @@ export default createStore({
     balance: 0,
   },
   mutations: {
+    setIsConnected(state, isConnected) {
+      state.isConnected = isConnected;
+    },
     setIsLoading(state, isLoading) {
       state.isLoading = isLoading;
     },

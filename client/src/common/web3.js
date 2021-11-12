@@ -90,11 +90,10 @@ export const initWeb3 = async () => {
   await window.ethereum.request({
     method: "eth_requestAccounts",
   });
-  // await connectToWeb3();
   await getNetwork();
   await getAccounts();
-  // getSigner();
   await getContract();
+  store.commit("setIsConnected", true);
 };
 
 export const getBalance = async () => {
@@ -104,9 +103,6 @@ export const getBalance = async () => {
   }
 
   let balance = await provider.getBalance(store.state.accounts[0]);
-  // let formattedBalance = Number(ethers.utils.formatEther(balance));
-  // console.debug("formattedBalance", balance);
-  // return Number(formattedBalance).toFixed(2);
   store.commit("setBalance", balance);
 };
 

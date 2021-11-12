@@ -26,7 +26,7 @@
     </section>
   </div>
 </template>
-<script>
+<script>    
 import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
