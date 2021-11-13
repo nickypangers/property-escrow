@@ -1,20 +1,32 @@
 <template>
-  <div class="p-4">
+  <div class="p-4 bg-primary text-white">
     <div class="flex justify-between items-center">
       <div>Hio</div>
-      <div class="relative inline-block w-40">
-        <button @click="connect" class="w-full bg-blue-200" v-if="!isConnected">
-          Connect Account
-        </button>
-        <button
-          v-if="isConnected"
-          class="w-full truncate border"
-          @click="showButtonMenu = !showButtonMenu"
-        >
-          {{ accounts[0] }}
-        </button>
-        <div class="absolute w-full" v-if="showButtonMenu">
-          <button class="w-full border" @click="disconnect">Disconnect</button>
+      <div class="flex items-center">
+        <div class="mr-3 font-bold" v-if="isConnected">{{ balance }} ETH</div>
+        <div class="relative inline-block w-40">
+          <button
+            @click="connect"
+            class="w-full bg-blue-accent rounded-2xl text-black"
+            v-if="!isConnected"
+          >
+            Connect Account
+          </button>
+          <button
+            v-if="isConnected"
+            class="w-full truncate bg-blue-accent rounded-xl text-black"
+            @click="showButtonMenu = !showButtonMenu"
+          >
+            {{ concealAddress(accounts[0]) }}
+          </button>
+          <div
+            class="absolute w-full bg-white mt-4 rounded-xl"
+            v-if="showButtonMenu"
+          >
+            <button class="w-full text-black" @click="disconnect">
+              Disconnect
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -25,6 +37,8 @@ import { initWeb3 } from "@/common/web3.js";
 import { useRouter } from "vue-router";
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
+import { formatEtherBalance } from "@/common/web3.js";
+import { concealAddress } from "@/common/strings.js";
 
 export default {
   setup() {
@@ -32,6 +46,7 @@ export default {
     const store = useStore();
 
     const accounts = computed(() => store.state.accounts);
+    const balance = computed(() => formatEtherBalance(store.state.balance, 5));
 
     const showButtonMenu = ref(false);
 
@@ -64,6 +79,8 @@ export default {
       accounts,
       showButtonMenu,
       disconnect,
+      balance,
+      concealAddress,
     };
   },
 };

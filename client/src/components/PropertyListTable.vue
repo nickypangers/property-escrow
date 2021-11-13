@@ -1,7 +1,7 @@
 <template>
-  <table class="w-full table-auto">
+  <table class="w-full table-auto mt-2 bg-white rounded-xl">
     <thead>
-      <tr>
+      <tr class="border-b">
         <th>Listing ID</th>
         <th>Property Name</th>
         <th>Property Country</th>
@@ -11,12 +11,13 @@
         <th></th>
       </tr>
     </thead>
-    <tbody>
+    <tbody class="divide-y">
       <property-list-row
         v-for="property in propertyList"
         :key="'property-' + property.id"
         :property="property"
-        @success="emit('refresh')"
+        @success="emit('success')"
+        @fail="fail"
       />
     </tbody>
   </table>
@@ -31,15 +32,26 @@ export default {
       default: () => [],
     },
   },
-  emits: ["refresh"],
+  emits: ["success", "fail"],
   components: {
     PropertyListRow,
   },
   setup(props, { emit }) {
+    const fail = (title, body) => {
+      emit("fail", title, body);
+    };
+
     return {
       ethers,
       emit,
+      fail,
     };
   },
 };
 </script>
+
+<style lang="scss" scoped>
+th {
+  @apply p-4;
+}
+</style>

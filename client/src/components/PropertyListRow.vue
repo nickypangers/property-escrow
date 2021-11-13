@@ -59,7 +59,7 @@ export default {
       default: () => {},
     },
   },
-  emits: ["success"],
+  emits: ["success", "fail"],
   components: {
     HollowDotsSpinner,
   },
@@ -97,7 +97,8 @@ export default {
         isPurchaseLoading.value = false;
       } catch (e) {
         isPurchaseLoading.value = false;
-        alert(e);
+        // alert(e);
+        emit("fail", "Purchase Failed", e.message);
       }
     };
 
@@ -115,3 +116,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+td {
+  @apply p-4;
+}
+</style>

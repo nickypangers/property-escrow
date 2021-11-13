@@ -1,10 +1,11 @@
 <template>
-  <div class="container mx-auto px-20">
+  <div>
+    <!-- <div class="container mx-auto px-20"> -->
     <section id="actions">
-      <div class="w-full flex justify-between items-center">
-        <div>{{ store.state.accounts[0] }} : {{ balance }} ETH</div>
+      <div class="w-full flex justify-end items-center">
+        <!-- <div>{{ store.state.accounts[0] }} : {{ balance }} ETH</div> -->
         <button
-          class="bg-green-200 rounded-xl p-3"
+          class="bg-green-accent rounded-xl p-3 text-white"
           @click="router.push('/app/create')"
         >
           Create Listing
@@ -20,25 +21,34 @@
       <template v-if="isPropertyListLoaded">
         <property-list-table
           :property-list="propertyList"
-          @refresh="getPropertyList"
+          @success="getPropertyList"
+          @fail="setModal"
         />
       </template>
     </section>
+    <modal :is-visible="isVisible" @cancel="closeModal" @confirm="goToDetail">
+      <template v-slot:title>{{ modal.title }}</template>
+      <template v-slot:body>
+        <p>{{ modal.body }}</p>
+      </template>
+    </modal>
   </div>
 </template>
-<script>    
-import { ref, computed, onMounted } from "vue";
+<script>
+import { ref, reactive, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import contract from "@/common/contract.js";
 import { getBalance, formatEtherBalance } from "@/common/web3.js";
 import PropertyListTable from "@/components/PropertyListTable";
 import Loader from "@/components/util/Loader";
+import Modal from "@/components/util/Modal";
 export default {
   name: "AppHome",
   components: {
     PropertyListTable,
     Loader,
+    Modal,
   },
   setup() {
     const store = useStore();
@@ -48,6 +58,23 @@ export default {
     const balance = computed(() => formatEtherBalance(store.state.balance, 5));
 
     const isPropertyListLoaded = ref(false);
+
+    const isVisible = ref(false);
+    const modal = reactive({
+      title: "",
+      body: "",
+    });
+    const closeModal = () => {
+      isVisible.value = false;
+    };
+    const setModal = (title, body) => {
+      modal.title = title;
+      modal.body = body;
+      isVisible.value = true;
+    };
+    const goToDetail = (id) => {
+      router.push(`/app/detail/${id}`);
+    };
 
     async function getPropertyList() {
       let list = await contract.getPropertyList();
@@ -76,6 +103,11 @@ export default {
       getPropertyList,
       balance,
       isPropertyListLoaded,
+      closeModal,
+      setModal,
+      modal,
+      goToDetail,
+      isVisible,
     };
   },
 };

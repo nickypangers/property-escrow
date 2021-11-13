@@ -93,6 +93,7 @@ export const initWeb3 = async () => {
   await getNetwork();
   await getAccounts();
   await getContract();
+  await getBalance();
   store.commit("setIsConnected", true);
 };
 

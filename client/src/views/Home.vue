@@ -1,5 +1,5 @@
 <template>
-  <div class="home">Property Escrow on Blockchain</div>
+<div class="home">Property Escrow on Blockchain</div>
 </template>
 
 <script>
