@@ -165,10 +165,13 @@ export default {
 
     onMounted(() => {
       console.log(provinceList.value);
+      console.log(props.modelValue);
       if (!props.isEdit) {
         property.value.propertyAddress.province = provinceList.value[0];
       }
-      price.value = formatEtherBalance(property.value.price, 18);
+      if (property.value.price != "") {
+        price.value = formatEtherBalance(property.value.price, 18);
+      }
     });
 
     return {
