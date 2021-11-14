@@ -81,6 +81,7 @@ export default {
         property.name,
         property.description,
         ethers.utils.parseEther(`${property.price}`, "ether")
+        // property.price
       );
       const txReceipt = await txResponse.wait();
       // console.debug("txReceipt", txReceipt);

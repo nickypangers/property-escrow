@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form class="w-full flex flex-col items-start" @submit.prevent="callback">
+    <form class="w-full flex flex-col items-start" @submit.prevent="submitForm">
       <label for="address1"> Address 1:</label>
       <input
         type="text"
@@ -26,13 +26,6 @@
         :disabled="isEdit"
       />
       <label for="province">Province:</label>
-      <!-- <input
-        type="text"
-        name="province"
-        id="province"
-        v-model="property.propertyAddress.province"
-        :disabled="isEdit"
-      /> -->
       <select
         name="province"
         id="province"
@@ -83,21 +76,21 @@
       <input type="text" name="price" id="price" v-model="price" />
       <input
         type="submit"
-        class="mt-3"
+        class="mt-6"
         :value="submitText"
         v-show="!isTransactionLoading"
       />
     </form>
-    <div v-if="isTransactionLoading" class="mt-3 flex justify-center">
+    <div v-if="isTransactionLoading" class="mt-6 flex justify-center">
       <hollow-dots-spinner :dot-size="15" :dots-num="3" color="#3498db" />
     </div>
   </div>
 </template>
 <script>
-import { computed, watch, onMounted } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 import countries from "@/assets/data/countries.min.json";
 import { HollowDotsSpinner } from "epic-spinners";
-// import { formatEtherBalance } from "@/common/web3.js";
+import { formatEtherBalance } from "@/common/web3.js";
 // import { ethers } from "ethers";
 
 export default {
@@ -122,16 +115,17 @@ export default {
   },
   emits: ["update:modelValue"],
   setup(props, { emit }) {
-    const price = computed({
-      get: () => {
-        // return formatEtherBalance(property.value.price, 18);
-        return property.value.price;
-      },
-      set: (val) => {
-        console.log(val);
-        property.value.price = `${val}`;
-      },
-    });
+    // const price = computed({
+    //   get: () => {
+    //     return formatEtherBalance(property.value.price, 18);
+    //     // return property.value.price;
+    //   },
+    //   set: (val) => {
+    //     console.log(val);
+    //     property.value.price = ethers.utils.parseEther(`${val}`, "ether");
+    //   },
+    // });
+    const price = ref(0);
 
     const property = computed({
       get: () => props.modelValue,
@@ -140,6 +134,11 @@ export default {
         emit("update:modelValue", value);
       },
     });
+
+    const submitForm = () => {
+      property.value.price = price.value;
+      props.callback(property.value);
+    };
 
     const propertyCountry = computed(
       () => property.value.propertyAddress.country
@@ -169,6 +168,7 @@ export default {
       if (!props.isEdit) {
         property.value.propertyAddress.province = provinceList.value[0];
       }
+      price.value = formatEtherBalance(property.value.price, 18);
     });
 
     return {
@@ -176,6 +176,7 @@ export default {
       countryList,
       price,
       provinceList,
+      submitForm,
     };
   },
 };
@@ -183,10 +184,19 @@ export default {
 <style lang="scss" scoped>
 input,
 select {
-  @apply w-full border p-3;
+  @apply w-full border p-3 rounded-xl bg-white;
+}
+
+input:disabled,
+select:disabled {
+  @apply bg-gray-200 text-gray-500;
 }
 
 label {
   @apply mt-3;
+}
+
+input[type="submit"] {
+  @apply rounded-xl bg-green-accent text-white;
 }
 </style>

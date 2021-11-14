@@ -24,7 +24,7 @@
         <p>{{ modal.body }}</p>
       </template>
       <template v-slot:confirm-button>
-        <button>See Listings</button>
+        <button v-if="modal.showFooter">See Listings</button>
       </template>
     </modal>
   </div>
@@ -46,19 +46,6 @@ export default {
     const router = useRouter();
     const route = useRoute();
     const listing = ref({});
-    //   {
-    //   propertyAddress: {
-    //     address1: "",
-    //     address2: "",
-    //     city: "",
-    //     province: "",
-    //     postcode: "",
-    //     country: "",
-    //   },
-    //   name: "",
-    //   description: "",
-    //   price: "",
-    // });
     const countryList = computed(() => {
       return countries.sort();
     });
@@ -67,14 +54,16 @@ export default {
     const modal = reactive({
       title: "",
       body: "",
+      showFooter: false,
     });
     const isVisible = ref(false);
     const closeModal = () => {
       isVisible.value = false;
     };
-    const setModal = (title, body) => {
+    const setModal = (title, body, showFooter = true) => {
       modal.title = title;
       modal.body = body;
+      modal.showFooter = showFooter;
       isVisible.value = true;
     };
 
@@ -90,7 +79,7 @@ export default {
         getPropertyDetail();
       } catch (e) {
         isTransactionLoading.value = false;
-        alert(e);
+        setModal("Unable to edit", e.message, false);
       }
     };
 

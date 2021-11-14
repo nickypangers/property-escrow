@@ -13,12 +13,7 @@
           before purchasing. Please follow local laws and regulations at all
           times.
         </div>
-        <button
-          class="h-full px-3 py-4 rounded-xl bg-gray-200"
-          @click="router.go(-1)"
-        >
-          Back
-        </button>
+        <button class="back-button" @click="router.go(-1)">Back</button>
       </div>
       <!-- <pre>{{ property.isSold }}</pre> -->
       <table class="table-auto border-collapse border border-green-800">
@@ -72,28 +67,25 @@
       <div class="mt-3 text-left" v-if="!property.isSold">
         <template v-if="!property.isSold && !isOwner">
           <button
-            class="mr-3 p-3 rounded-xl bg-blue-200"
+            class="mr-3 bg-green-accent"
             v-if="!isPurchaseLoading"
             @click="purchaseProperty"
           >
             <p>Purchase</p>
           </button>
-          <button
-            class="mr-3 p-3 rounded-xl bg-blue-200"
-            v-if="isPurchaseLoading"
-          >
+          <button class="mr-3 bg-green-accent" v-if="isPurchaseLoading">
             <hollow-dots-spinner :dot-size="15" :dots-num="3" color="#3498db" />
           </button>
         </template>
 
         <button
-          class="mr-3 p-3 rounded-xl bg-gray-200 cursor-normal"
+          class="mr-3 bg-gray-200 cursor-normal"
           v-if="property.isSold && !isOwner"
         >
           Sold
         </button>
         <button
-          class="p-3 rounded-xl bg-blue-200"
+          class="bg-green-accent"
           v-if="!property.isSold && property.isActive && isOwner"
           @click="router.push(`/app/edit/${property.id}`)"
         >
@@ -229,5 +221,13 @@ td {
 th,
 td {
   @apply p-3 border border-black;
+}
+
+button {
+  @apply p-3 rounded-xl w-1/6 text-white;
+}
+
+.back-button {
+  @apply px-3 py-4 bg-gray-200 text-black;
 }
 </style>

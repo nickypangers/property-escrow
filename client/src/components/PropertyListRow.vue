@@ -7,37 +7,30 @@
       {{ concealAddress(property.owner) }}
     </td>
 
-    <td>{{ formatEtherBalance(property.price, 18) }} ETH</td>
+    <td>{{ formatEtherBalance(property.price, 2) }} ETH</td>
     <td>
-      <button class="p-2 bg-blue-200 rounded-xl" @click="goToPropertyDetail">
-        View More
-      </button>
+      <button class="clickable" @click="goToPropertyDetail">View More</button>
     </td>
     <td>
-      <button class="p-2 bg-gray-200 rounded-xl" v-if="isPurchaseLoading">
+      <button v-if="isPurchaseLoading" disabled>
         <hollow-dots-spinner :dot-size="10" :dots-num="3" color="#3498db" />
       </button>
       <div v-if="!isPurchaseLoading">
         <button
-          class="p-2 bg-blue-200 rounded-xl"
+          class="clickable"
           v-if="!property.isSold && !isOwner"
           @click="purchaseProperty(property)"
         >
           Purchase
         </button>
         <button
-          class="p-2 bg-blue-200 rounded-xl"
+          class="clickable"
           v-if="!property.isSold && isOwner"
           @click="goToEdit"
         >
           Edit
         </button>
-        <button
-          class="p-2 bg-gray-200 rounded-xl cursor-default"
-          v-if="property.isSold"
-        >
-          Sold
-        </button>
+        <button class="non-clickable" v-if="property.isSold">Sold</button>
       </div>
     </td>
   </tr>
@@ -120,5 +113,17 @@ export default {
 <style lang="scss" scoped>
 td {
   @apply p-4;
+}
+
+button {
+  @apply rounded-xl w-full p-2 text-black;
+}
+
+.clickable {
+  @apply bg-green-accent text-white;
+}
+
+.non-clickable {
+  @apply bg-gray-200 cursor-default;
 }
 </style>
