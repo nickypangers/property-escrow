@@ -2,6 +2,7 @@
   <div class="p-4 bg-primary text-white">
     <div class="flex justify-between items-center">
       <div>Hio</div>
+      <div>Total Amount Transacted: {{ totalAmountTransacted }} ETH</div>
       <div class="flex items-center">
         <div class="mr-3 font-bold" v-if="isConnected">{{ balance }} ETH</div>
         <div class="relative inline-block w-40">
@@ -35,10 +36,11 @@
 <script>
 import { initWeb3 } from "@/common/web3.js";
 import { useRouter } from "vue-router";
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
-import { formatEtherBalance } from "@/common/web3.js";
+import { getReadOnlyContract, formatEtherBalance } from "@/common/web3.js";
 import { concealAddress } from "@/common/strings.js";
+import contract from "@/common/contract.js";
 
 export default {
   setup() {
@@ -47,6 +49,7 @@ export default {
 
     const accounts = computed(() => store.state.accounts);
     const balance = computed(() => formatEtherBalance(store.state.balance, 5));
+    const totalAmountTransacted = ref(0);
 
     const showButtonMenu = ref(false);
 
@@ -73,6 +76,13 @@ export default {
       isConnected.value = false;
     };
 
+    onMounted(async () => {
+      await getReadOnlyContract();
+      contract.getTotalAmountTransacted().then((total) => {
+        totalAmountTransacted.value = formatEtherBalance(total, 2);
+      });
+    });
+
     return {
       connect,
       isConnected,
@@ -81,6 +91,7 @@ export default {
       disconnect,
       balance,
       concealAddress,
+      totalAmountTransacted,
     };
   },
 };

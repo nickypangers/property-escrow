@@ -13,6 +13,7 @@
       :is-transaction-loading="isTransactionLoading"
       :is-edit="true"
       v-if="hasProperty"
+      @cancel-listing="cancelListingCallback"
     />
     <modal
       :is-visible="isVisible"
@@ -88,6 +89,23 @@ export default {
       hasProperty.value = true;
     };
 
+    const cancelListing = async () => {
+      try {
+        isTransactionLoading.value = true;
+        console.debug("id", route.params.id);
+        const transaction = await contract.cancelListing(route.params.id);
+        isTransactionLoading.value = false;
+        setModal(
+          "Success",
+          `Listing cancelled successfully. Transaction ID: ${transaction.transaction}`
+        );
+        getPropertyDetail();
+      } catch (e) {
+        isTransactionLoading.value = false;
+        setModal("Unable to cancel", e.message, false);
+      }
+    };
+
     const hasProperty = ref(false);
 
     onMounted(async () => {
@@ -106,6 +124,7 @@ export default {
       editProperty,
       modal,
       hasProperty,
+      cancelListing,
     };
   },
 };

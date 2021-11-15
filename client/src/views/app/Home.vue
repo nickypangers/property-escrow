@@ -86,20 +86,14 @@ export default {
     onMounted(async () => {
       getBalance();
       try {
-        propertyList.value = await contract.getPropertyList();
+        let list = await contract.getPropertyList();
+        propertyList.value = list.filter(
+          (property) => property.isActive === true
+        );
       } catch (e) {
         alert(e.message);
       }
       isPropertyListLoaded.value = true;
-      //   contract.getPropertyList().then((list) => {
-      //     // console.log(list);
-      //     try {
-      //       propertyList.value = list;
-      //       isPropertyListLoaded.value = true;
-      //     } catch (e) {
-      //       alert(e);
-      //     }
-      //   });
     });
 
     return {

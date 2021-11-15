@@ -31,14 +31,12 @@ export default {
     const propertyList = ref([]);
     const store = useStore();
 
-    onMounted(() => {
-      contract
-        .getPropertyListByAddressIsOwner(store.state.accounts[0])
-        .then((val) => {
-          console.log(val);
-          propertyList.value = val;
-          isPropertyListLoaded.value = true;
-        });
+    onMounted(async () => {
+      let list = await contract.getPropertyListByAddressIsOwner(
+        store.state.accounts[0]
+      );
+      propertyList.value = list;
+      isPropertyListLoaded.value = true;
     });
 
     return {

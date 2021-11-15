@@ -74,12 +74,22 @@
       />
       <label for="price">Price:</label>
       <input type="text" name="price" id="price" v-model="price" />
-      <input
-        type="submit"
-        class="mt-6"
-        :value="submitText"
-        v-show="!isTransactionLoading"
-      />
+      <div class="mt-6 w-full flex" v-show="!isTransactionLoading">
+        <input
+          type="submit"
+          class="flex-grow bg-green-accent"
+          :value="submitText"
+          v-show="!isTransactionLoading"
+        />
+        <div class="w-3" v-if="isEdit"></div>
+        <button
+          class="flex-grow bg-red-accent"
+          v-if="isEdit"
+          @click="emit('cancelListing')"
+        >
+          Cancel Listing
+        </button>
+      </div>
     </form>
     <div v-if="isTransactionLoading" class="mt-6 flex justify-center">
       <hollow-dots-spinner :dot-size="15" :dots-num="3" color="#3498db" />
@@ -113,7 +123,7 @@ export default {
       default: false,
     },
   },
-  emits: ["update:modelValue"],
+  emits: ["update:modelValue", "cancelListing"],
   setup(props, { emit }) {
     // const price = computed({
     //   get: () => {
@@ -180,6 +190,7 @@ export default {
       price,
       provinceList,
       submitForm,
+      emit,
     };
   },
 };
@@ -187,7 +198,12 @@ export default {
 <style lang="scss" scoped>
 input,
 select {
-  @apply w-full border p-3 rounded-xl bg-white;
+  @apply border p-3 rounded-xl;
+}
+
+input[type="text"],
+select {
+  @apply w-full bg-white;
 }
 
 input:disabled,
@@ -199,7 +215,12 @@ label {
   @apply mt-3;
 }
 
+input[type="submit"],
+button {
+  @apply rounded-xl text-white;
+}
+
 input[type="submit"] {
-  @apply rounded-xl bg-green-accent text-white;
+  @apply bg-green-accent;
 }
 </style>

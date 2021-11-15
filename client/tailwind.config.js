@@ -9,6 +9,7 @@ module.exports = {
         sidebar: "#003844",
         "gray-blue": "#C9DAEA",
         "green-accent": "#00B295",
+        "red-accent": "#820933",
       },
     },
   },

@@ -3,6 +3,14 @@ import { ethers } from "ethers";
 import { getBalance } from "./web3.js";
 // import { formatEtherBalance } from "./web3.js";
 
+// function getCurrentContract() {
+//   if (store.state.isConnected) {
+//     return store.state.contract;
+//   }
+
+//   return store.state.readOnyContract;
+// }
+
 export default {
   async createListing(listing) {
     try {
@@ -28,7 +36,7 @@ export default {
   },
   async getPropertyList() {
     try {
-      let contract = store.state.contract;
+      let contract = store.state.readOnlyContract;
       const propertyList = await contract.getPropertyList();
       console.log(propertyList);
       await getBalance();
@@ -52,7 +60,7 @@ export default {
     return { transaction: txReceipt.transactionHash };
   },
   async getPropertyDetail(id) {
-    let contract = store.state.contract;
+    let contract = store.state.readOnlyContract;
     let property = {
       id: "",
       name: "",
@@ -106,9 +114,20 @@ export default {
     }
   },
 
+  // async getPropertyListByAddressIsOwner(id) {
+  //   try {
+  //     let contract = store.state.contract;
+  //     const propertyList = await contract.getPropertyListByAddressIsOwner(id);
+  //     await getBalance();
+  //     return propertyList;
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
+  // },
+
   async getPropertyListByAddressIsOwner(id) {
     try {
-      let contract = store.state.contract;
+      let contract = store.state.readOnlyContract;
       const propertyList = await contract.getPropertyListByAddressIsOwner(id);
       await getBalance();
       return propertyList;
@@ -119,12 +138,34 @@ export default {
 
   async getPropertyListByAddressIsBuyer(id) {
     try {
-      let contract = store.state.contract;
+      let contract = store.state.readOnlyContract;
       const propertyList = await contract.getPropertyListByAddressIsBuyer(id);
       await getBalance();
       return propertyList;
     } catch (e) {
       console.error(e);
+    }
+  },
+
+  async getTotalAmountTransacted() {
+    try {
+      let contract = store.state.readOnlyContract;
+      return await contract.getTotalAmountTransacted();
+    } catch (e) {
+      console.error(e);
+    }
+  },
+
+  async cancelListing(id) {
+    try {
+      let contract = store.state.contract;
+      const txResponse = await contract.cancelListing(id);
+      const txReceipt = await txResponse.wait();
+      // console.debug("txReceipt", txReceipt);
+      await getBalance();
+      return { transaction: txReceipt.transactionHash };
+    } catch (e) {
+      console.log(e);
     }
   },
 

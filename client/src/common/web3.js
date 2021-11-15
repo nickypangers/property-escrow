@@ -53,7 +53,7 @@ const getSigner = () => {
   return signer;
 };
 
-export const getContract = async () => {
+export const getReadOnlyContract = async () => {
   let provider = getProvider();
   if (provider == null) {
     throw "Provider not found";
@@ -66,7 +66,9 @@ export const getContract = async () => {
   );
   // console.debug("readOnlyContract", readOnlyContract);
   store.commit("setReadOnlyContract", readOnlyContract);
+};
 
+export const getContract = async () => {
   let signer = getSigner();
   if (signer == null) {
     throw "Signer not found";
