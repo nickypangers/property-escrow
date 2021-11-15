@@ -74,8 +74,9 @@ export default {
 
     async function getPropertyList() {
       let list = await contract.getPropertyList();
-      console.debug(list);
-      propertyList.value = list;
+      propertyList.value = list.filter(
+        (property) => property.isActive === true
+      );
     }
 
     const purchaseProperty = async (property) => {
@@ -86,10 +87,7 @@ export default {
     onMounted(async () => {
       getBalance();
       try {
-        let list = await contract.getPropertyList();
-        propertyList.value = list.filter(
-          (property) => property.isActive === true
-        );
+        await getPropertyList();
       } catch (e) {
         alert(e.message);
       }
