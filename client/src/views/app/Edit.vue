@@ -13,7 +13,7 @@
       :is-transaction-loading="isTransactionLoading"
       :is-edit="true"
       v-if="hasProperty"
-      @cancel-listing="cancelListingCallback"
+      @cancel-listing="cancelListing"
     />
     <modal
       :is-visible="isVisible"
