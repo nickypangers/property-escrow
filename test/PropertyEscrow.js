@@ -196,7 +196,7 @@ describe("PropertyEscrow contract", function () {
       expect(propertyList.length).to.equal(2);
 
       const propertyListByAddressIsOwner =
-        await propertyEscrow.getPropertyListByAddressIsOwnerIsOwner(owner.address);
+        await propertyEscrow.getPropertyListByAddressIsOwner(owner.address);
 
       expect(propertyListByAddressIsOwner.length).to.equal(1);
       expect(propertyListByAddressIsOwner[0].owner).to.equal(owner.address);
@@ -227,7 +227,7 @@ describe("PropertyEscrow contract", function () {
         .payProperty(1, { from: addr1.address, value: 1 });
 
       const propertyListByAddressIsBuyer =
-        await propertyEscrow.getPropertyListByAddressIsOwnerIsBuyer(addr1.address);
+        await propertyEscrow.getPropertyListByAddressIsBuyer(addr1.address);
 
       expect(propertyListByAddressIsBuyer.length).to.equal(1);
     });

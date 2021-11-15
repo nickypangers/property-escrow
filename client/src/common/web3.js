@@ -2,14 +2,13 @@ import { ethers } from "ethers";
 import PropertyEscrowContract from "../contracts/PropertyEscrow.json";
 import store from "@/store/index.js";
 
-// const getContractAddress = () => "0x4346378BEba982D8e6c5C0f840963edF81cF2cBB";
-const getContractAddress = () => "0x0d7AD7108Ee80A36e2F5a0542EE3A55eb56a91dc";
-
 // 0x0d7AD7108Ee80A36e2F5a0542EE3A55eb56a91dc
 
 // const connectToWeb3 = async () => {
 //   const provider = getProvider();
 // };
+
+const contractAddress = () => "0x2cc9dd6215c496D493B4C0A6E1F0eb9f075e3dFb";
 
 const getNetwork = async () => {
   const network = await getProvider().getNetwork();
@@ -60,7 +59,7 @@ export const getReadOnlyContract = async () => {
   }
 
   let readOnlyContract = new ethers.Contract(
-    getContractAddress(),
+    contractAddress(),
     PropertyEscrowContract.abi,
     provider
   );
@@ -75,7 +74,7 @@ export const getContract = async () => {
   }
 
   let contract = new ethers.Contract(
-    getContractAddress(),
+    contractAddress(),
     PropertyEscrowContract.abi,
     signer
   );

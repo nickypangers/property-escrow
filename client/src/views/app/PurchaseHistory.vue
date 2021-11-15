@@ -31,14 +31,28 @@ export default {
     const propertyList = ref([]);
     const store = useStore();
 
-    onMounted(() => {
-      contract
-        .getPropertyListByAddressIsBuyer(store.state.accounts[0])
-        .then((val) => {
-          console.log(val);
-          propertyList.value = val;
-          isPropertyListLoaded.value = true;
-        });
+    const setPropertyList = (list) => {
+      propertyList.value = list;
+      isPropertyListLoaded.value = true;
+    };
+
+    onMounted(async () => {
+      try {
+        // contract
+        // .getPropertyListByAddressIsBuyer(store.state.accounts[0])
+        // .then((val) => {
+        //   console.log(val);
+        //   propertyList.value = val;
+        //   isPropertyListLoaded.value = true;
+        // });
+        let list = await contract.getPropertyListByAddressIsBuyer(
+          store.state.accounts[0]
+        );
+        setPropertyList(list);
+      } catch (e) {
+        setPropertyList([]);
+        alert(e.message);
+      }
     });
 
     return {

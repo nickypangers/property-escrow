@@ -3,14 +3,6 @@ import { ethers } from "ethers";
 import { getBalance } from "./web3.js";
 // import { formatEtherBalance } from "./web3.js";
 
-// function getCurrentContract() {
-//   if (store.state.isConnected) {
-//     return store.state.contract;
-//   }
-
-//   return store.state.readOnyContract;
-// }
-
 export default {
   async createListing(listing) {
     try {
@@ -132,7 +124,8 @@ export default {
       await getBalance();
       return propertyList;
     } catch (e) {
-      console.error(e);
+      console.log(e);
+      throw e;
     }
   },
 
@@ -143,7 +136,8 @@ export default {
       await getBalance();
       return propertyList;
     } catch (e) {
-      console.error(e);
+      console.log(e);
+      throw e;
     }
   },
 
@@ -152,7 +146,8 @@ export default {
       let contract = store.state.readOnlyContract;
       return await contract.getTotalAmountTransacted();
     } catch (e) {
-      console.error(e);
+      console.log(e);
+      throw e;
     }
   },
 
@@ -166,6 +161,7 @@ export default {
       return { transaction: txReceipt.transactionHash };
     } catch (e) {
       console.log(e);
+      throw e;
     }
   },
 

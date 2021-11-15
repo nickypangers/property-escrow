@@ -161,17 +161,13 @@ export default {
     // const countryList = computed(() => countries.sort());
     const countryList = computed(() => Object.keys(countries).sort());
 
-    watch(
-      propertyCountry,
-      (value, oldVal) => {
-        // console.debug("oldVal country", oldVal);
-        // console.debug("value country", value);
-        if (oldVal != value) {
-          property.value.propertyAddress.province = provinceList.value[0];
-        }
+    watch(propertyCountry, (value, oldVal) => {
+      // console.debug("oldVal country", oldVal);
+      // console.debug("value country", value);
+      if (oldVal != value) {
+        property.value.propertyAddress.province = provinceList.value[0];
       }
-      //   { deep: true }
-    );
+    });
 
     onMounted(() => {
       console.log(provinceList.value);
