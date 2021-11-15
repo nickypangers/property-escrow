@@ -10,6 +10,14 @@ export default createStore({
     accounts: [],
     balance: 0,
   },
+  // getters: {
+  //   selectedContract: (state) => {
+  //     if (state.isConnected) {
+  //       return state.contract;
+  //     }
+  //     return state.readOnlyContract;
+  //   },
+  // },
   mutations: {
     setIsConnected(state, isConnected) {
       state.isConnected = isConnected;

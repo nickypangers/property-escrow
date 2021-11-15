@@ -1,12 +1,13 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
-import App from "../views/App.vue";
+import App from "../views/AppHome.vue";
 import AppHome from "../views/app/Home.vue";
 import Create from "../views/app/Create.vue";
 import Edit from "../views/app/Edit.vue";
 import PropertyDetail from "../views/app/PropertyDetail.vue";
 import store from "@/store/index.js";
-// import contract from "@/common/contract.js";
+import ManageMyListings from "../views/app/ManageMyListings.vue";
+import PurchaseHistory from "../views/app/PurchaseHistory.vue";
 
 const routes = [
   {
@@ -30,6 +31,16 @@ const routes = [
         path: "",
         name: "AppHome",
         component: AppHome,
+      },
+      {
+        path: "manage",
+        name: "ManageMyListings",
+        component: ManageMyListings,
+      },
+      {
+        path: "orders",
+        name: "PurchaseHistory",
+        component: PurchaseHistory,
       },
       {
         path: "create",

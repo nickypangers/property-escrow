@@ -1,31 +1,27 @@
 <template>
   <div>
     <!-- <div class="container mx-auto px-20"> -->
-    <section id="actions">
-      <div class="w-full flex justify-end items-center">
-        <!-- <div>{{ store.state.accounts[0] }} : {{ balance }} ETH</div> -->
-        <button
-          class="bg-green-accent rounded-xl p-3 text-white"
-          @click="router.push('/app/create')"
-        >
-          Create Listing
-        </button>
+    <div class="w-full flex justify-end items-center">
+      <!-- <div>{{ store.state.accounts[0] }} : {{ balance }} ETH</div> -->
+      <button
+        class="bg-green-accent rounded-xl p-3 text-white"
+        @click="router.push('/app/create')"
+      >
+        Create Listing
+      </button>
+    </div>
+    <template v-if="!isPropertyListLoaded">
+      <div class="w-full flex justify-center">
+        <loader />
       </div>
-    </section>
-    <section id="table">
-      <template v-if="!isPropertyListLoaded">
-        <div class="w-full flex justify-center">
-          <loader />
-        </div>
-      </template>
-      <template v-if="isPropertyListLoaded">
-        <property-list-table
-          :property-list="propertyList"
-          @success="getPropertyList"
-          @fail="setModal"
-        />
-      </template>
-    </section>
+    </template>
+    <template v-if="isPropertyListLoaded">
+      <property-list-table
+        :property-list="propertyList"
+        @success="getPropertyList"
+        @fail="setModal"
+      />
+    </template>
     <modal :is-visible="isVisible" @cancel="closeModal" @confirm="goToDetail">
       <template v-slot:title>{{ modal.title }}</template>
       <template v-slot:body>
@@ -87,12 +83,23 @@ export default {
       console.log(transaction);
     };
 
-    onMounted(() => {
+    onMounted(async () => {
       getBalance();
-      contract.getPropertyList().then((list) => {
-        propertyList.value = list;
-        isPropertyListLoaded.value = true;
-      });
+      try {
+        propertyList.value = await contract.getPropertyList();
+      } catch (e) {
+        alert(e.message);
+      }
+      isPropertyListLoaded.value = true;
+      //   contract.getPropertyList().then((list) => {
+      //     // console.log(list);
+      //     try {
+      //       propertyList.value = list;
+      //       isPropertyListLoaded.value = true;
+      //     } catch (e) {
+      //       alert(e);
+      //     }
+      //   });
     });
 
     return {

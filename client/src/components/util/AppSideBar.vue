@@ -13,10 +13,10 @@
       <button @click="router.push('/app')">Home</button>
     </div>
     <div>
-      <button>Manage My Listings</button>
+      <button @click="router.push('/app/manage')">Manage My Listings</button>
     </div>
     <div>
-      <button>Purchase History</button>
+      <button @click="router.push('/app/orders')">Purchase History</button>
     </div>
     <div>
       <button>Help</button>

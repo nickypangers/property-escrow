@@ -2,7 +2,10 @@ import { ethers } from "ethers";
 import PropertyEscrowContract from "../contracts/PropertyEscrow.json";
 import store from "@/store/index.js";
 
-const getContractAddress = () => "0xa5976854eebcAb98afb849C034f9966f44cf5892";
+// const getContractAddress = () => "0x4346378BEba982D8e6c5C0f840963edF81cF2cBB";
+const getContractAddress = () => "0x0d7AD7108Ee80A36e2F5a0542EE3A55eb56a91dc";
+
+// 0x0d7AD7108Ee80A36e2F5a0542EE3A55eb56a91dc
 
 // const connectToWeb3 = async () => {
 //   const provider = getProvider();

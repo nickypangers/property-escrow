@@ -1,5 +1,6 @@
 import store from "@/store/index.js";
 import { ethers } from "ethers";
+import { getBalance } from "./web3.js";
 // import { formatEtherBalance } from "./web3.js";
 
 export default {
@@ -26,9 +27,16 @@ export default {
     }
   },
   async getPropertyList() {
-    let contract = store.state.contract;
-    const propertyList = await contract.getPropertyList();
-    return propertyList;
+    try {
+      let contract = store.state.contract;
+      const propertyList = await contract.getPropertyList();
+      console.log(propertyList);
+      await getBalance();
+      return propertyList;
+    } catch (e) {
+      console.log(e.message);
+      throw e;
+    }
   },
   async purchaseProperty(property) {
     // console.debug("property", property.price);
@@ -39,6 +47,8 @@ export default {
     });
     const txReceipt = await txResponse.wait();
     // console.debug("txReceipt", txReceipt);
+    await getBalance();
+
     return { transaction: txReceipt.transactionHash };
   },
   async getPropertyDetail(id) {
@@ -71,6 +81,8 @@ export default {
     }
     // property.price = formatEtherBalance(property.price, 18);
     // console.debug("property", property);
+    await getBalance();
+
     return property;
   },
   async editProperty(property) {
@@ -85,10 +97,36 @@ export default {
       );
       const txReceipt = await txResponse.wait();
       // console.debug("txReceipt", txReceipt);
+      await getBalance();
+
       return { transaction: txReceipt.transactionHash };
     } catch (e) {
       console.debug("error", e);
       throw e;
     }
   },
+
+  async getPropertyListByAddressIsOwner(id) {
+    try {
+      let contract = store.state.contract;
+      const propertyList = await contract.getPropertyListByAddressIsOwner(id);
+      await getBalance();
+      return propertyList;
+    } catch (e) {
+      console.error(e);
+    }
+  },
+
+  async getPropertyListByAddressIsBuyer(id) {
+    try {
+      let contract = store.state.contract;
+      const propertyList = await contract.getPropertyListByAddressIsBuyer(id);
+      await getBalance();
+      return propertyList;
+    } catch (e) {
+      console.error(e);
+    }
+  },
+
+  // async getPropertyList
 };

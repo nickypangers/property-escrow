@@ -231,6 +231,62 @@ contract PropertyEscrow {
         return properties;
     }
 
+    function getPropertyListByAddressIsBuyer(address _address)
+        public
+        view
+        returns (Property[] memory)
+    {
+        uint256 length = 0;
+
+        for (uint256 i = 0; i < properties.length; i = i + 1) {
+            if (properties[i].buyer == _address) {
+                length = length + 1;
+            }
+        }
+
+        Property[] memory _propertyList = new Property[](length);
+
+        if (length == 0) {
+            return _propertyList;
+        }
+
+        for (uint256 i = 0; i < properties.length; i = i + 1) {
+            if (properties[i].buyer == _address) {
+                _propertyList[i] = properties[i];
+            }
+        }
+
+        return _propertyList;
+    }
+
+    function getPropertyListByAddressIsOwner(address _address)
+        public
+        view
+        returns (Property[] memory)
+    {
+        uint256 length = 0;
+
+        for (uint256 i = 0; i < properties.length; i = i + 1) {
+            if (properties[i].owner == _address) {
+                length = length + 1;
+            }
+        }
+
+        Property[] memory _propertyList = new Property[](length);
+
+        if (length == 0) {
+            return _propertyList;
+        }
+
+        for (uint256 i = 0; i < properties.length; i = i + 1) {
+            if (properties[i].owner == _address) {
+                _propertyList[i] = properties[i];
+            }
+        }
+
+        return _propertyList;
+    }
+
     function getProperty(uint256 _id) private view returns (Property memory) {
         for (uint256 i = 0; i < properties.length; i = i + 1) {
             if (properties[i].id == _id) {

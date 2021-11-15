@@ -55,17 +55,19 @@ describe("PropertyEscrow contract", function () {
         .connect(owner)
         .getPropertyLength();
       expect(propertiesLength).to.equal(0);
-      await propertyEscrow.createListing(
-        "Flat H, 20/F, Block 16",
-        "Park Island",
-        "Ma Wan",
-        "NT",
-        "00000",
-        "HK",
-        "PI1620H",
-        "Some description",
-        1
-      );
+      await propertyEscrow
+        .connect(owner)
+        .createListing(
+          "Flat H, 20/F, Block 16",
+          "Park Island",
+          "Ma Wan",
+          "NT",
+          "00000",
+          "HK",
+          "PI1620H",
+          "Some description",
+          1
+        );
     });
 
     it("Create property should increase properties by 1", async function () {
@@ -171,6 +173,63 @@ describe("PropertyEscrow contract", function () {
       expect(newProperty.name).to.equal("PI1620H Edit");
       expect(newProperty.description).to.equal("Some Description Edit");
       expect(newProperty.price).to.equal(3);
+    });
+
+    it("Get property list by address is owner should return list length of 1", async function () {
+      // [owner, addr1] = await ethers.getSigners();
+
+      await propertyEscrow
+        .connect(addr1)
+        .createListing(
+          "Flat H, 20/F, Block 16",
+          "Park Island",
+          "Ma Wan",
+          "NT",
+          "00000",
+          "HK",
+          "PI1620H",
+          "Some description",
+          1
+        );
+
+      const propertyList = await propertyEscrow.getPropertyList();
+      expect(propertyList.length).to.equal(2);
+
+      const propertyListByAddressIsOwner =
+        await propertyEscrow.getPropertyListByAddressIsOwnerIsOwner(owner.address);
+
+      expect(propertyListByAddressIsOwner.length).to.equal(1);
+      expect(propertyListByAddressIsOwner[0].owner).to.equal(owner.address);
+    });
+
+    it("Get property list as address is buyer should return list of 1", async function () {
+      await propertyEscrow
+        .connect(addr1)
+        .createListing(
+          "Flat H, 20/F, Block 16",
+          "Park Island",
+          "Ma Wan",
+          "NT",
+          "00000",
+          "HK",
+          "PI1620H",
+          "Some description",
+          1
+        );
+
+      const propertyList = await propertyEscrow.getPropertyList();
+      expect(propertyList.length).to.equal(2);
+
+      // console.log(propertyList[1]);
+
+      await propertyEscrow
+        .connect(addr1)
+        .payProperty(1, { from: addr1.address, value: 1 });
+
+      const propertyListByAddressIsBuyer =
+        await propertyEscrow.getPropertyListByAddressIsOwnerIsBuyer(addr1.address);
+
+      expect(propertyListByAddressIsBuyer.length).to.equal(1);
     });
   });
 });
