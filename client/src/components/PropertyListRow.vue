@@ -12,34 +12,36 @@
       <button class="clickable" @click="goToPropertyDetail">View More</button>
     </td>
     <td>
-      <button v-if="isPurchaseLoading" disabled>
-        <hollow-dots-spinner :dot-size="10" :dots-num="3" color="#3498db" />
-      </button>
-      <div v-if="!isPurchaseLoading">
-        <button
-          class="clickable"
-          v-if="!property.isSold && !isOwner"
-          @click="purchaseProperty(property)"
-        >
-          Purchase
+      <div v-if="isConnected">
+        <button v-if="isPurchaseLoading" disabled>
+          <hollow-dots-spinner :dot-size="10" :dots-num="3" color="#3498db" />
         </button>
-        <template v-if="property.isActive">
+        <div v-if="!isPurchaseLoading">
           <button
             class="clickable"
-            v-if="!property.isSold && isOwner"
-            @click="goToEdit"
+            v-if="!property.isSold && !isOwner"
+            @click="purchaseProperty(property)"
           >
-            Edit
+            Purchase
           </button>
-        </template>
-        <template v-if="!property.isActive">
-          <button class="non-clickable bg-gray-200" v-if="property.isSold">
-            Sold
-          </button>
-          <button class="non-clickable bg-red-accent" v-if="!property.isSold">
-            <p class="text-white">Cancelled</p>
-          </button>
-        </template>
+          <template v-if="property.isActive">
+            <button
+              class="clickable"
+              v-if="!property.isSold && isOwner"
+              @click="goToEdit"
+            >
+              Edit
+            </button>
+          </template>
+          <template v-if="!property.isActive">
+            <button class="non-clickable bg-gray-200" v-if="property.isSold">
+              Sold
+            </button>
+            <button class="non-clickable bg-red-accent" v-if="!property.isSold">
+              <p class="text-white">Cancelled</p>
+            </button>
+          </template>
+        </div>
       </div>
     </td>
   </tr>
@@ -74,6 +76,7 @@ export default {
     const isOwner = computed(() => {
       return props.property.owner === store.state.accounts[0];
     });
+    const isConnected = computed(() => store.state.isConnected);
 
     const getEtherscanLink = (address) => {
       return "https://ropsten.etherscan.io/address/" + address;
@@ -115,6 +118,7 @@ export default {
       formatEtherBalance,
       concealAddress,
       goToEdit,
+      isConnected,
     };
   },
 };

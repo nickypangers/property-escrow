@@ -24,7 +24,7 @@
         </button>
       </div>
       <div>
-        <button>Help</button>
+        <button @click="router.push('/app/about')">About</button>
       </div>
     </div>
   </div>

@@ -11,7 +11,7 @@ import { formatEtherBalance, getBalance } from "./web3.js";
 export default {
   async createListing(listing) {
     try {
-      let contract = store.state.contract;
+      let contract = store.getters.activeContract;
       const txResponse = await contract.createListing(
         listing.propertyAddress.address1,
         listing.propertyAddress.address2,
@@ -33,7 +33,7 @@ export default {
   },
   async getPropertyList() {
     try {
-      let contract = store.state.readOnlyContract;
+      let contract = store.getters.activeContract;
       const propertyList = await contract.getPropertyList();
       // console.log(propertyList);
       await getBalance();
@@ -45,7 +45,7 @@ export default {
   },
   async purchaseProperty(property) {
     // console.debug("property", property.price);
-    let contract = store.state.contract;
+    let contract = store.getters.activeContract;
     const txResponse = await contract.payProperty(property.id, {
       from: store.state.accounts[0],
       value: property.price,
@@ -57,7 +57,7 @@ export default {
     return { transaction: txReceipt.transactionHash };
   },
   async getPropertyDetail(id) {
-    let contract = store.state.readOnlyContract;
+    let contract = store.getters.activeContract;
     let property = {
       id: "",
       name: "",
@@ -92,7 +92,7 @@ export default {
   },
   async editProperty(property) {
     try {
-      let contract = store.state.contract;
+      let contract = store.getters.activeContract;
       const txResponse = await contract.editProperty(
         property.id,
         property.name,
@@ -113,7 +113,7 @@ export default {
 
   // async getPropertyListByAddressIsOwner(id) {
   //   try {
-  //     let contract = store.state.contract;
+  //     let contract = store.getters.activeContract;
   //     const propertyList = await contract.getPropertyListByAddressIsOwner(id);
   //     await getBalance();
   //     return propertyList;
@@ -124,7 +124,7 @@ export default {
 
   async getPropertyListByAddressIsOwner(address) {
     try {
-      let contract = store.state.contract;
+      let contract = store.getters.activeContract;
       const propertyList = await contract.getPropertyListByAddressIsOwner(
         address
       );
@@ -138,7 +138,7 @@ export default {
 
   async getPropertyListByAddressIsBuyer(address) {
     try {
-      let contract = store.state.contract;
+      let contract = store.getters.activeContract;
       const propertyList = await contract.getPropertyListByAddressIsBuyer(
         address
       );
@@ -152,7 +152,7 @@ export default {
 
   async getTotalAmountTransacted() {
     try {
-      let contract = store.state.readOnlyContract;
+      let contract = store.getters.activeContract;
       let totalAmountTransacted = await contract.getTotalAmountTransacted();
       store.commit(
         "setTotalAmountTransacted",
@@ -166,7 +166,7 @@ export default {
 
   async cancelListing(id) {
     try {
-      let contract = store.state.contract;
+      let contract = store.getters.activeContract;
       const txResponse = await contract.cancelListing(id);
       const txReceipt = await txResponse.wait();
       // console.debug("txReceipt", txReceipt);

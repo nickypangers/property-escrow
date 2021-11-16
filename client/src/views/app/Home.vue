@@ -5,7 +5,7 @@
       <!-- <div>{{ store.state.accounts[0] }} : {{ balance }} ETH</div> -->
       <button
         class="bg-green-accent rounded-xl p-3 text-white"
-        @click="router.push('/app/create')"
+        @click="toCreateListing"
       >
         Create Listing
       </button>
@@ -84,6 +84,14 @@ export default {
       console.log(transaction);
     };
 
+    const toCreateListing = () => {
+      if (!store.state.isConnected) {
+        setModal("Error", "Please connect to the network");
+        return;
+      }
+      router.push("/app/create");
+    };
+
     onMounted(async () => {
       getBalance();
       try {
@@ -107,6 +115,7 @@ export default {
       modal,
       goToDetail,
       isVisible,
+      toCreateListing,
     };
   },
 };

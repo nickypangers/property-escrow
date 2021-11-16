@@ -1,14 +1,14 @@
 <template>
   <div class="h-full">
-    <NavBar />
+    <!-- <NavBar /> -->
     <router-view />
   </div>
 </template>
 <script>
-import NavBar from "@/components/util/NavBar";
+// import NavBar from "@/components/util/NavBar";
 export default {
   components: {
-    NavBar,
+    // NavBar,
   },
   setup() {},
 };

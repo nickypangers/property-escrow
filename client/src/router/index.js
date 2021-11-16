@@ -8,6 +8,7 @@ import PropertyDetail from "../views/app/PropertyDetail.vue";
 import store from "@/store/index.js";
 import ManageMyListings from "../views/app/ManageMyListings.vue";
 import PurchaseHistory from "../views/app/PurchaseHistory.vue";
+import About from "../views/app/About.vue";
 
 const routes = [
   {
@@ -19,13 +20,13 @@ const routes = [
     path: "/app",
     name: "App",
     component: App,
-    beforeEnter(to, from, next) {
-      if (store.state.contract == null) {
-        next("/");
-      } else {
-        next();
-      }
-    },
+    // beforeEnter(to, from, next) {
+    //   if (store.getters.activeContract == null) {
+    //     next("/");
+    //   } else {
+    //     next();
+    //   }
+    // },
     children: [
       {
         path: "",
@@ -58,7 +59,7 @@ const routes = [
         component: Edit,
         beforeEnter: async (to, from, next) => {
           let id = to.params.id;
-          let contract = store.state.contract;
+          let contract = store.getters.activeContract;
           const propertyDetail = await contract.getPropertyDetail(id);
           if (propertyDetail.owner != store.state.accounts[0]) {
             next(false);
@@ -70,6 +71,11 @@ const routes = [
           }
           next();
         },
+      },
+      {
+        path: "about",
+        name: "About",
+        component: About,
       },
     ],
   },

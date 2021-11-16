@@ -18,8 +18,23 @@ const getNetwork = async () => {
   }
 };
 
-const getProvider = () => {
+const getInfuraProvider = () => {
+  return new ethers.providers.InfuraProvider(
+    "ropsten",
+    "2c12d41fd9bb4b30b3b6a21d9fd30657"
+  );
+};
+
+const getWebProvider = () => {
   return new ethers.providers.Web3Provider(window.ethereum, "any");
+};
+
+const getProvider = () => {
+  // return new ethers.providers.Web3Provider(window.ethereum, "any");
+  if (store.state.isConnected == false) {
+    return getWebProvider();
+  }
+  return getInfuraProvider();
 };
 
 const getAccounts = async () => {
@@ -87,6 +102,10 @@ export const getContract = async () => {
   store.commit("setContractSigner", contractSigner);
 };
 
+export const initReadOnly = async () => {
+  await getReadOnlyContract();
+};
+
 export const initWeb3 = async () => {
   if (window.ethereum == undefined) {
     throw "Please install metamask";
@@ -102,6 +121,10 @@ export const initWeb3 = async () => {
 };
 
 export const getBalance = async () => {
+  if (!store.state.isConnected) {
+    return;
+  }
+
   const provider = getProvider();
   if (provider == null) {
     throw "Provider not found";

@@ -1,7 +1,9 @@
 <template>
   <div class="p-4 bg-primary text-white">
     <div class="flex justify-between items-center">
-      <div>Property Escrow</div>
+      <button @click="router.push('/')">
+        <div>Property Escrow</div>
+      </button>
       <div>Total Amount Transacted: {{ totalAmountTransacted }} ETH</div>
       <div class="flex items-center">
         <div class="mr-3 font-bold" v-if="isConnected">{{ balance }} ETH</div>
@@ -76,6 +78,7 @@ export default {
     const disconnect = () => {
       showButtonMenu.value = false;
       isConnected.value = false;
+      router.push("/app");
     };
 
     onMounted(async () => {
@@ -92,6 +95,7 @@ export default {
       balance,
       concealAddress,
       totalAmountTransacted,
+      router,
     };
   },
 };

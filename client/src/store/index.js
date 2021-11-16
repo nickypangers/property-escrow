@@ -17,6 +17,14 @@ export default createStore({
     isModalOpen: false,
     totalAmountTransacted: 0,
   },
+  getters: {
+    activeContract: (state) => {
+      if (state.isConnected) {
+        return state.contract;
+      }
+      return state.readOnlyContract;
+    },
+  },
   mutations: {
     setModalClose(state) {
       state.isModalOpen = false;
