@@ -178,5 +178,20 @@ export default {
     }
   },
 
+  getPropertyStatus(property) {
+    if (property.isActive) {
+      return "Actve";
+    }
+    if (!property.isActive) {
+      if (property.isSold) {
+        return "Sold";
+      }
+
+      return "Cancelled";
+    }
+
+    return "";
+  },
+
   // async getPropertyList
 };

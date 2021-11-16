@@ -60,6 +60,10 @@
           </td>
         </tr>
         <tr>
+          <th>Status</th>
+          <td>{{ contract.getPropertyStatus(property) }}</td>
+        </tr>
+        <tr>
           <th>Listed Price</th>
           <td>{{ price }} ETH</td>
         </tr>
@@ -206,6 +210,7 @@ export default {
       showModal,
       price,
       modal,
+      contract,
     };
   },
 };

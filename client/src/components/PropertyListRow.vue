@@ -23,14 +23,23 @@
         >
           Purchase
         </button>
-        <button
-          class="clickable"
-          v-if="!property.isSold && isOwner"
-          @click="goToEdit"
-        >
-          Edit
-        </button>
-        <button class="non-clickable" v-if="property.isSold">Sold</button>
+        <template v-if="property.isActive">
+          <button
+            class="clickable"
+            v-if="!property.isSold && isOwner"
+            @click="goToEdit"
+          >
+            Edit
+          </button>
+        </template>
+        <template v-if="!property.isActive">
+          <button class="non-clickable bg-gray-200" v-if="property.isSold">
+            Sold
+          </button>
+          <button class="non-clickable bg-red-accent" v-if="!property.isSold">
+            <p class="text-white">Cancelled</p>
+          </button>
+        </template>
       </div>
     </td>
   </tr>
@@ -125,6 +134,6 @@ button {
 }
 
 .non-clickable {
-  @apply bg-gray-200 cursor-default;
+  @apply cursor-default;
 }
 </style>
