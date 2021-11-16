@@ -1,7 +1,7 @@
 <template>
   <div class="p-4 bg-primary text-white">
     <div class="flex justify-between items-center">
-      <div>Hio</div>
+      <div>Property Escrow</div>
       <div>Total Amount Transacted: {{ totalAmountTransacted }} ETH</div>
       <div class="flex items-center">
         <div class="mr-3 font-bold" v-if="isConnected">{{ balance }} ETH</div>
@@ -49,7 +49,9 @@ export default {
 
     const accounts = computed(() => store.state.accounts);
     const balance = computed(() => formatEtherBalance(store.state.balance, 5));
-    const totalAmountTransacted = ref(0);
+    const totalAmountTransacted = computed(
+      () => store.state.totalAmountTransacted
+    );
 
     const showButtonMenu = ref(false);
 
@@ -78,9 +80,7 @@ export default {
 
     onMounted(async () => {
       await getReadOnlyContract();
-      contract.getTotalAmountTransacted().then((total) => {
-        totalAmountTransacted.value = formatEtherBalance(total, 2);
-      });
+      contract.getTotalAmountTransacted();
     });
 
     return {

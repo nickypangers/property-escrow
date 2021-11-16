@@ -13,10 +13,14 @@
       <button @click="router.push('/app')">Home</button>
     </div>
     <div>
-      <button @click="router.push('/app/manage')">Manage My Listings</button>
+      <button @click="router.push('/app/manage')" :disabled="!isConnected">
+        Manage My Listings
+      </button>
     </div>
     <div>
-      <button @click="router.push('/app/orders')">Purchase History</button>
+      <button @click="router.push('/app/orders')" :disabled="!isConnected">
+        Purchase History
+      </button>
     </div>
     <div>
       <button>Help</button>
@@ -26,12 +30,19 @@
 
 <script>
 import { useRouter } from "vue-router";
+import { useStore } from "vuex";
+import { computed } from "vue";
 export default {
   setup() {
     const router = useRouter();
+    const store = useStore();
 
+    const isConnected = computed(() => {
+      return store.state.isConnected;
+    });
     return {
       router,
+      isConnected,
     };
   },
 };

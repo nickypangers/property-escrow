@@ -1,7 +1,12 @@
 import store from "@/store/index.js";
 import { ethers } from "ethers";
-import { getBalance } from "./web3.js";
+import { formatEtherBalance, getBalance } from "./web3.js";
 // import { formatEtherBalance } from "./web3.js";
+
+const options = {
+  gasPrice: 200,
+  gasLimit: 10000000,
+};
 
 export default {
   async createListing(listing) {
@@ -119,8 +124,11 @@ export default {
 
   async getPropertyListByAddressIsOwner(id) {
     try {
-      let contract = store.state.readOnlyContract;
-      const propertyList = await contract.getPropertyListByAddressIsOwner(id);
+      let contract = store.state.contract;
+      const propertyList = await contract.getPropertyListByAddressIsOwner(
+        id,
+        options
+      );
       await getBalance();
       return propertyList;
     } catch (e) {
@@ -131,8 +139,11 @@ export default {
 
   async getPropertyListByAddressIsBuyer(id) {
     try {
-      let contract = store.state.readOnlyContract;
-      const propertyList = await contract.getPropertyListByAddressIsBuyer(id);
+      let contract = store.state.contract;
+      const propertyList = await contract.getPropertyListByAddressIsBuyer(
+        id,
+        options
+      );
       await getBalance();
       return propertyList;
     } catch (e) {
@@ -144,7 +155,11 @@ export default {
   async getTotalAmountTransacted() {
     try {
       let contract = store.state.readOnlyContract;
-      return await contract.getTotalAmountTransacted();
+      let totalAmountTransacted = await contract.getTotalAmountTransacted();
+      store.commit(
+        "setTotalAmountTransacted",
+        formatEtherBalance(totalAmountTransacted)
+      );
     } catch (e) {
       console.log(e);
       throw e;

@@ -9,16 +9,24 @@ export default createStore({
     contractSigner: null,
     accounts: [],
     balance: 0,
+    modal: {
+      title: "",
+      body: "",
+      showFooter: "",
+    },
+    isModalOpen: false,
+    totalAmountTransacted: 0,
   },
-  // getters: {
-  //   selectedContract: (state) => {
-  //     if (state.isConnected) {
-  //       return state.contract;
-  //     }
-  //     return state.readOnlyContract;
-  //   },
-  // },
   mutations: {
+    setModalClose(state) {
+      state.isModalOpen = false;
+    },
+    setModal(state, modal) {
+      state.modal.title = modal.title;
+      state.modal.body = modal.body;
+      state.modal.showFooter = modal.showFooter;
+      state.isModalOpen = true;
+    },
     setIsConnected(state, isConnected) {
       state.isConnected = isConnected;
     },
@@ -39,6 +47,9 @@ export default createStore({
     },
     setBalance(state, balance) {
       state.balance = balance;
+    },
+    setTotalAmountTransacted(state, totalAmountTransacted) {
+      state.totalAmountTransacted = totalAmountTransacted;
     },
   },
   actions: {},
