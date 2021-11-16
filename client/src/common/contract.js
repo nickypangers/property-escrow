@@ -3,10 +3,10 @@ import { ethers } from "ethers";
 import { formatEtherBalance, getBalance } from "./web3.js";
 // import { formatEtherBalance } from "./web3.js";
 
-const options = {
-  gasPrice: 200,
-  gasLimit: 10000000,
-};
+// const options = {
+//   gasPrice: 200,
+//   gasLimit: 1000000000,
+// };
 
 export default {
   async createListing(listing) {
@@ -122,12 +122,11 @@ export default {
   //   }
   // },
 
-  async getPropertyListByAddressIsOwner(id) {
+  async getPropertyListByAddressIsOwner(address) {
     try {
       let contract = store.state.contract;
       const propertyList = await contract.getPropertyListByAddressIsOwner(
-        id,
-        options
+        address
       );
       await getBalance();
       return propertyList;
@@ -137,12 +136,11 @@ export default {
     }
   },
 
-  async getPropertyListByAddressIsBuyer(id) {
+  async getPropertyListByAddressIsBuyer(address) {
     try {
       let contract = store.state.contract;
       const propertyList = await contract.getPropertyListByAddressIsBuyer(
-        id,
-        options
+        address
       );
       await getBalance();
       return propertyList;

@@ -8,7 +8,7 @@ import store from "@/store/index.js";
 //   const provider = getProvider();
 // };
 
-const contractAddress = () => "0x2cc9dd6215c496D493B4C0A6E1F0eb9f075e3dFb";
+const contractAddress = () => "0x303318F340062CBb276BF53818e753FDBE5e1b0c";
 
 const getNetwork = async () => {
   const network = await getProvider().getNetwork();

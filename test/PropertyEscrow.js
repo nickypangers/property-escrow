@@ -229,6 +229,8 @@ describe("PropertyEscrow contract", function () {
       const propertyListByAddressIsBuyer =
         await propertyEscrow.getPropertyListByAddressIsBuyer(addr1.address);
 
+      // console.log(propertyListByAddressIsBuyer);
+
       expect(propertyListByAddressIsBuyer.length).to.equal(1);
     });
   });
