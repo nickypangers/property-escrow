@@ -35,7 +35,7 @@ export default {
     try {
       let contract = store.state.readOnlyContract;
       const propertyList = await contract.getPropertyList();
-      console.log(propertyList);
+      // console.log(propertyList);
       await getBalance();
       return propertyList;
     } catch (e) {

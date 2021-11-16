@@ -1,29 +1,31 @@
 <template>
-  <div
-    class="
-      mx-3
-      rounded-xl
-      divide-y divide-black divide-solid
-      h-auto
-      bg-sidebar
-      text-white
-    "
-  >
-    <div>
-      <button @click="router.push('/app')">Home</button>
-    </div>
-    <div>
-      <button @click="router.push('/app/manage')" :disabled="!isConnected">
-        Manage My Listings
-      </button>
-    </div>
-    <div>
-      <button @click="router.push('/app/orders')" :disabled="!isConnected">
-        Purchase History
-      </button>
-    </div>
-    <div>
-      <button>Help</button>
+  <div class="mx-3 lg:col-span-1">
+    <div
+      class="
+        rounded-xl
+        divide-y divide-black divide-solid
+        w-full
+        h-auto
+        bg-sidebar
+        text-white
+      "
+    >
+      <div>
+        <button @click="router.push('/app')">Home</button>
+      </div>
+      <div>
+        <button @click="router.push('/app/manage')" :disabled="!isConnected">
+          Manage My Listings
+        </button>
+      </div>
+      <div>
+        <button @click="router.push('/app/orders')" :disabled="!isConnected">
+          Purchase History
+        </button>
+      </div>
+      <div>
+        <button>Help</button>
+      </div>
     </div>
   </div>
 </template>

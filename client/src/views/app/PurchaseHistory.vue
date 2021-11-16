@@ -48,7 +48,7 @@ export default {
         let list = await contract.getPropertyListByAddressIsBuyer(
           store.state.accounts[0]
         );
-        console.log(list);
+        // console.log(list);
         setPropertyList(list);
       } catch (e) {
         setPropertyList([]);

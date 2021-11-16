@@ -1,7 +1,7 @@
 <template>
-  <div class="grid grid-cols-6 gap-4 bg-gray-blue py-3">
+  <div class="lg:grid lg:grid-cols-6 gap-4 bg-gray-blue py-3">
     <app-side-bar />
-    <div class="col-span-5 container">
+    <div class="col-span-5 container mt-3 lg:mt-0">
       <router-view class="px-3" />
     </div>
   </div>

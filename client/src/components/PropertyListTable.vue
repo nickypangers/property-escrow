@@ -12,13 +12,22 @@
       </tr>
     </thead>
     <tbody class="divide-y">
-      <property-list-row
-        v-for="property in propertyList"
-        :key="'property-' + property.id"
-        :property="property"
-        @success="emit('success')"
-        @fail="fail"
-      />
+      <template v-if="propertyList.length > 0">
+        <property-list-row
+          v-for="property in propertyList"
+          :key="'property-' + property.id"
+          :property="property"
+          @success="emit('success')"
+          @fail="fail"
+        />
+      </template>
+      <template v-if="propertyList.length == 0">
+        <tr>
+          <td colspan="7" class="text-center">
+            <p>{{ emptyMessage }}</p>
+          </td>
+        </tr>
+      </template>
     </tbody>
   </table>
 </template>
@@ -30,6 +39,10 @@ export default {
     propertyList: {
       type: Array,
       default: () => [],
+    },
+    emptyMessage: {
+      type: String,
+      default: "No Listing",
     },
   },
   emits: ["success", "fail"],
@@ -52,6 +65,10 @@ export default {
 
 <style lang="scss" scoped>
 th {
+  @apply p-4;
+}
+
+td {
   @apply p-4;
 }
 </style>
