@@ -9,7 +9,9 @@
 
     <td>{{ formatEtherBalance(property.price, 2) }} ETH</td>
     <td>
-      <button class="clickable" @click="goToPropertyDetail">View More</button>
+      <button class="green-button action-button" @click="goToPropertyDetail">
+        View More
+      </button>
     </td>
     <td>
       <div v-if="isConnected">
@@ -18,7 +20,7 @@
         </button>
         <div v-if="!isPurchaseLoading">
           <button
-            class="clickable"
+            class="green-button action-button"
             v-if="!property.isSold && !isOwner"
             @click="purchaseProperty(property)"
           >
@@ -26,7 +28,7 @@
           </button>
           <template v-if="property.isActive">
             <button
-              class="clickable"
+              class="green-button action-button"
               v-if="!property.isSold && isOwner"
               @click="goToEdit"
             >
@@ -34,10 +36,16 @@
             </button>
           </template>
           <template v-if="!property.isActive">
-            <button class="non-clickable bg-gray-200" v-if="property.isSold">
+            <button
+              class="non-clickable action-button bg-gray-200"
+              v-if="property.isSold"
+            >
               Sold
             </button>
-            <button class="non-clickable bg-red-accent" v-if="!property.isSold">
+            <button
+              class="non-clickable action-button bg-red-accent"
+              v-if="!property.isSold"
+            >
               <p class="text-white">Cancelled</p>
             </button>
           </template>
@@ -130,11 +138,7 @@ td {
 }
 
 button {
-  @apply rounded-xl w-full p-2 text-black;
-}
-
-.clickable {
-  @apply bg-green-accent text-white;
+  @apply w-full;
 }
 
 .non-clickable {

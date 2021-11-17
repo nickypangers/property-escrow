@@ -17,7 +17,11 @@
       <br />
       <p>
         The project is open source and is available on Github by clicking
-        <a href="http://google.com" class="text-blue-500 underline">here</a>.
+        <a
+          href="https://github.com/nickypangers/property-escrow"
+          class="text-blue-500 underline"
+          >here</a
+        >.
       </p>
     </div>
   </section>

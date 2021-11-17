@@ -1,0 +1,7 @@
+.green-button {
+  @apply bg-green-accent hover:bg-green-hover text-white;
+}
+
+.action-button {
+  @apply rounded-xl p-3;
+}

@@ -68,7 +68,7 @@
           <td>{{ price }} ETH</td>
         </tr>
       </table>
-      <div class="mt-3 text-left" v-if="!property.isSold">
+      <div class="mt-3 text-left" v-if="isConnected">
         <template v-if="!property.isSold && !isOwner">
           <button
             class="mr-3 bg-green-accent"
@@ -149,6 +149,7 @@ export default {
     const isOwner = computed(() => {
       return store.state.accounts[0] === property.value.owner;
     });
+    const isConnected = computed(() => store.state.isConnected);
 
     const getEtherscanLink = (address) => {
       return "https://ropsten.etherscan.io/address/" + address;
@@ -211,6 +212,7 @@ export default {
       price,
       modal,
       contract,
+      isConnected,
     };
   },
 };

@@ -2,7 +2,7 @@
   <div class="p-4 bg-primary text-white">
     <div class="flex justify-between items-center">
       <button @click="router.push('/')">
-        <div>Property Escrow</div>
+        <div>Back To Mainpage</div>
       </button>
       <div>Total Amount Transacted: {{ totalAmountTransacted }} ETH</div>
       <div class="flex items-center">
@@ -66,6 +66,11 @@ export default {
       },
     });
 
+    const removeContract = () => {
+      store.commit("setContract", null);
+      store.commit("setContractSigner", null);
+    };
+
     const connect = async () => {
       try {
         await initWeb3();
@@ -78,6 +83,7 @@ export default {
     const disconnect = () => {
       showButtonMenu.value = false;
       isConnected.value = false;
+      removeContract();
       router.push("/app");
     };
 

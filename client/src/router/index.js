@@ -37,16 +37,34 @@ const routes = [
         path: "manage",
         name: "ManageMyListings",
         component: ManageMyListings,
+        beforeEnter(to, from, next) {
+          if (store.state.isConnected) {
+            next();
+          }
+          next("/app");
+        },
       },
       {
         path: "orders",
         name: "PurchaseHistory",
         component: PurchaseHistory,
+        beforeEnter(to, from, next) {
+          if (store.state.isConnected) {
+            next();
+          }
+          next("/app");
+        },
       },
       {
         path: "create",
         name: "Create",
         component: Create,
+        beforeEnter(to, from, next) {
+          if (store.state.isConnected) {
+            next();
+          }
+          next("/app");
+        },
       },
       {
         path: "detail/:id",
@@ -58,6 +76,12 @@ const routes = [
         name: "Edit",
         component: Edit,
         beforeEnter: async (to, from, next) => {
+          if (store.state.isConnected) {
+            next();
+          } else {
+            next("/app");
+          }
+
           let id = to.params.id;
           let contract = store.getters.activeContract;
           const propertyDetail = await contract.getPropertyDetail(id);
@@ -67,7 +91,6 @@ const routes = [
           }
           if (!propertyDetail.isActive) {
             next(false);
-            return;
           }
           next();
         },

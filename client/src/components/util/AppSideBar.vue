@@ -11,7 +11,7 @@
       "
     >
       <div>
-        <button @click="router.push('/app')">Home</button>
+        <button class="rounded-t-xl" @click="router.push('/app')">Home</button>
       </div>
       <div>
         <button @click="router.push('/app/manage')" :disabled="!isConnected">
@@ -25,6 +25,15 @@
       </div>
       <div>
         <button @click="router.push('/app/about')">About</button>
+      </div>
+      <div>
+        <a
+          href="https://ropsten.etherscan.io/address/0x303318F340062CBb276BF53818e753FDBE5e1b0c"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <button class="rounded-b-xl">View Contract</button>
+        </a>
       </div>
     </div>
   </div>
@@ -52,6 +61,6 @@ export default {
 
 <style lang="scss" scoped>
 button {
-  @apply w-full py-3;
+  @apply w-full py-3 hover:bg-sidebar-hover;
 }
 </style>

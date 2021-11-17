@@ -3,10 +3,7 @@
     <!-- <div class="container mx-auto px-20"> -->
     <div class="w-full flex justify-end items-center">
       <!-- <div>{{ store.state.accounts[0] }} : {{ balance }} ETH</div> -->
-      <button
-        class="bg-green-accent rounded-xl p-3 text-white"
-        @click="toCreateListing"
-      >
+      <button class="green-button action-button" @click="toCreateListing">
         Create Listing
       </button>
     </div>

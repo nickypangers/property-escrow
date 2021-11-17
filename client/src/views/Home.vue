@@ -8,7 +8,25 @@
         Enter App
       </button>
     </div>
-    <div class="home">Property Escrow on Blockchain</div>
+    <div class="home">
+      <p class="text-2xl">Buy and Sell Property using Blockchain</p>
+      <br />
+      <div class="text-lg">
+        <p>This app is currently live on <b>Ropsten</b> test network.</p>
+        <p>
+          This is a personal project and the contract has not been audited.
+          Please do not fill in any personal information including real-world
+          addresses.
+        </p>
+        <p><b>This application is for entertainment purposes only.</b></p>
+        <p>
+          Feel free to check out my porfolio
+          <a href="http://nickypangers.com" class="text-blue-500 underline">
+            here
+          </a>
+        </p>
+      </div>
+    </div>
   </div>
 </template>
 

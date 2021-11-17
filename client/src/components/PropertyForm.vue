@@ -77,7 +77,7 @@
       <div class="mt-6 w-full flex" v-show="!isTransactionLoading">
         <input
           type="submit"
-          class="flex-grow bg-green-accent"
+          class="flex-grow action-button green-button"
           :value="submitText"
           v-show="!isTransactionLoading"
         />
@@ -194,7 +194,7 @@ export default {
 <style lang="scss" scoped>
 input,
 select {
-  @apply border p-3 rounded-xl;
+  @apply border p-3 rounded-xl cursor-auto;
 }
 
 input[type="text"],
