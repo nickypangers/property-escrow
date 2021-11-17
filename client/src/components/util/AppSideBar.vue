@@ -13,15 +13,11 @@
       <div>
         <button class="rounded-t-xl" @click="router.push('/app')">Home</button>
       </div>
-      <div>
-        <button @click="router.push('/app/manage')" :disabled="!isConnected">
-          Manage My Listings
-        </button>
+      <div v-if="isConnected">
+        <button @click="router.push('/app/manage')">Manage My Listings</button>
       </div>
-      <div>
-        <button @click="router.push('/app/orders')" :disabled="!isConnected">
-          Purchase History
-        </button>
+      <div v-if="isConnected">
+        <button @click="router.push('/app/orders')">Purchase History</button>
       </div>
       <div>
         <button @click="router.push('/app/about')">About</button>
