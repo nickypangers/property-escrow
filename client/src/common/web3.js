@@ -32,19 +32,22 @@ const getWebProvider = () => {
 
 const getProvider = () => {
   // return new ethers.providers.Web3Provider(window.ethereum, "any");
-  if (store.state.isConnected == false) {
-    return getWebProvider();
+  if (!store.state.isConnected) {
+    return getInfuraProvider();
   }
-  return getInfuraProvider();
+  return getWebProvider();
 };
 
 const getAccounts = async () => {
-  let provider = getProvider();
+  let provider = getWebProvider();
   if (provider == null) {
     throw "Provider not found";
   }
 
+  console.log(provider);
+
   let accounts = await provider.listAccounts();
+  console.log(accounts);
   if (accounts.length == 0) {
     throw "No accounts";
   }
@@ -54,7 +57,7 @@ const getAccounts = async () => {
 };
 
 const getSigner = () => {
-  const provider = getProvider();
+  const provider = getWebProvider();
 
   if (provider == null) {
     throw "Provider not found";
