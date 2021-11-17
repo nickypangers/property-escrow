@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto px-20">
+  <div>
     <div class="flex justify-between items-end py-3">
       <h1 class="font-bold">Edit Listing</h1>
       <button class="p-3 rounded-xl bg-gray-200" @click="router.go(-1)">

@@ -58,13 +58,13 @@ describe("PropertyEscrow contract", function () {
       await propertyEscrow
         .connect(owner)
         .createListing(
-          "Flat H, 20/F, Block 16",
-          "Park Island",
-          "Ma Wan",
-          "NT",
+          "123",
+          "456",
+          "789",
+          "nt",
           "00000",
-          "HK",
-          "PI1620H",
+          "Russia",
+          "Prop name",
           "Some description",
           1
         );
@@ -133,24 +133,22 @@ describe("PropertyEscrow contract", function () {
 
     it("Get property should return property", async function () {
       const property = await propertyEscrow.getPropertyDetail(1);
-      //    "Flat H, 20/F, Block 16",
-      //     "Park Island",
-      //     "Wa Wan",
-      //     "NT",
+      //    "123",
+      //     "456",
+      //     "789",
+      //     "nt",
       //     "00000",
-      //     "HK",
-      //     "PI1620H",
+      //     "Russia",
+      //     "Prop name",
       //     "Some description",
       //     1
-      expect(property.propertyAddress.address1).to.equal(
-        "Flat H, 20/F, Block 16"
-      );
-      expect(property.propertyAddress.address2).to.equal("Park Island");
-      expect(property.propertyAddress.city).to.equal("Ma Wan");
-      expect(property.propertyAddress.province).to.equal("NT");
+      expect(property.propertyAddress.address1).to.equal("123");
+      expect(property.propertyAddress.address2).to.equal("456");
+      expect(property.propertyAddress.city).to.equal("789");
+      expect(property.propertyAddress.province).to.equal("nt");
       expect(property.propertyAddress.postcode).to.equal("00000");
-      expect(property.propertyAddress.country).to.equal("HK");
-      expect(property.name).to.equal("PI1620H");
+      expect(property.propertyAddress.country).to.equal("Russia");
+      expect(property.name).to.equal("Prop name");
       expect(property.description).to.equal("Some description");
       expect(property.price).to.equal(1);
     });
@@ -162,15 +160,15 @@ describe("PropertyEscrow contract", function () {
 
     it("Edit property should return property with new information", async function () {
       const property = await propertyEscrow.getPropertyDetail(1);
-      expect(property.name).to.equal("PI1620H");
+      expect(property.name).to.equal("Prop name");
       await propertyEscrow.editProperty(
         1,
-        "PI1620H Edit",
+        "Prop name Edit",
         "Some Description Edit",
         3
       );
       const newProperty = await propertyEscrow.getPropertyDetail(1);
-      expect(newProperty.name).to.equal("PI1620H Edit");
+      expect(newProperty.name).to.equal("Prop name Edit");
       expect(newProperty.description).to.equal("Some Description Edit");
       expect(newProperty.price).to.equal(3);
     });
@@ -181,13 +179,13 @@ describe("PropertyEscrow contract", function () {
       await propertyEscrow
         .connect(addr1)
         .createListing(
-          "Flat H, 20/F, Block 16",
-          "Park Island",
-          "Ma Wan",
-          "NT",
+          "123",
+          "456",
+          "789",
+          "nt",
           "00000",
-          "HK",
-          "PI1620H",
+          "Russia",
+          "Prop name",
           "Some description",
           1
         );
@@ -206,13 +204,13 @@ describe("PropertyEscrow contract", function () {
       await propertyEscrow
         .connect(addr1)
         .createListing(
-          "Flat H, 20/F, Block 16",
-          "Park Island",
-          "Ma Wan",
-          "NT",
+          "123",
+          "456",
+          "789",
+          "nt",
           "00000",
-          "HK",
-          "PI1620H",
+          "Russia",
+          "Prop name",
           "Some description",
           1
         );
