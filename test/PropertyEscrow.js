@@ -231,5 +231,20 @@ describe("PropertyEscrow contract", function () {
 
       expect(propertyListByAddressIsBuyer.length).to.equal(1);
     });
+
+    it("Get total listings sold should return 0", async function () {
+      const totalListingsSold = await propertyEscrow.getTotalListingsSold();
+      expect(totalListingsSold).to.equal(0);
+    });
+
+    it("Get total listings sold after purchase a listing should return 1", async function () {
+      await propertyEscrow
+        .connect(addr1)
+        .payProperty(1, { from: addr1.address, value: 1 });
+
+      const totalListingsSold = await propertyEscrow.getTotalListingsSold();
+
+      expect(totalListingsSold).to.equal(1);
+    });
   });
 });

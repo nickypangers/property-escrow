@@ -1,6 +1,6 @@
 import store from "@/store/index.js";
 import { ethers } from "ethers";
-import { formatEtherBalance, getBalance } from "./web3.js";
+import { getBalance } from "./web3.js";
 // import { formatEtherBalance } from "./web3.js";
 
 // const options = {
@@ -154,10 +154,18 @@ export default {
     try {
       let contract = store.getters.activeContract;
       let totalAmountTransacted = await contract.getTotalAmountTransacted();
-      store.commit(
-        "setTotalAmountTransacted",
-        formatEtherBalance(totalAmountTransacted)
-      );
+      store.commit("setTotalAmountTransacted", totalAmountTransacted);
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
+  },
+
+  async getTotalListingsSold() {
+    try {
+      let contract = store.getters.activeContract;
+      let totalListingsSold = await contract.getTotalListingsSold();
+      store.commit("setTotalListingsSold", totalListingsSold);
     } catch (e) {
       console.log(e);
       throw e;

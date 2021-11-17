@@ -23,11 +23,7 @@
         <button @click="router.push('/app/about')">About</button>
       </div>
       <div>
-        <a
-          href="https://ropsten.etherscan.io/address/0x303318F340062CBb276BF53818e753FDBE5e1b0c"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a :href="contractUrl" target="_blank" rel="noopener noreferrer">
           <button class="rounded-b-xl">View Contract</button>
         </a>
       </div>
@@ -39,6 +35,7 @@
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { computed } from "vue";
+import { contractAddress } from "@/common/web3.js";
 export default {
   setup() {
     const router = useRouter();
@@ -47,9 +44,14 @@ export default {
     const isConnected = computed(() => {
       return store.state.isConnected;
     });
+
+    const contractUrl =
+      "https://ropsten.etherscan.io/address/" + contractAddress();
+
     return {
       router,
       isConnected,
+      contractUrl,
     };
   },
 };

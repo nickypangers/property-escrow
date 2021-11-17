@@ -106,6 +106,7 @@ export default {
         isPurchaseLoading.value = true;
         await contract.purchaseProperty(property);
         await contract.getTotalAmountTransacted();
+        await contract.getTotalListingsSold();
         // console.log(transaction);
         emit("success");
         isPurchaseLoading.value = false;

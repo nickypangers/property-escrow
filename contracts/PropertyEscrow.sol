@@ -297,4 +297,14 @@ contract PropertyEscrow {
 
         return total;
     }
+
+    function getTotalListingsSold() public view returns (uint256) {
+        uint256 total = 0;
+        for (uint256 i = 0; i < properties.length; i = i + 1) {
+            if (properties[i].isSold == true) {
+                total = total + 1;
+            }
+        }
+        return total;
+    }
 }

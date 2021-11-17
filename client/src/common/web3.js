@@ -8,7 +8,8 @@ import store from "@/store/index.js";
 //   const provider = getProvider();
 // };
 
-const contractAddress = () => "0x303318F340062CBb276BF53818e753FDBE5e1b0c";
+export const contractAddress = () =>
+  "0xAE01f0c14f4784fEC698f300832832a4ECB28F27";
 
 const getNetwork = async () => {
   const network = await getProvider().getNetwork();
@@ -136,4 +137,12 @@ export const getBalance = async () => {
 
 export const formatEtherBalance = (balance, dp = 2) => {
   return Number(ethers.utils.formatEther(balance)).toFixed(dp);
+};
+
+export const disconnect = () => {
+  store.commit("setContract", null);
+  store.commit("setContractSigner", null);
+  store.commit("setBalance", 0);
+  store.commit("setAccounts", []);
+  store.commit("setIsConnected", false);
 };

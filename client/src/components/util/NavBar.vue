@@ -40,7 +40,11 @@ import { initWeb3 } from "@/common/web3.js";
 import { useRouter } from "vue-router";
 import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
-import { getReadOnlyContract, formatEtherBalance } from "@/common/web3.js";
+import {
+  getReadOnlyContract,
+  formatEtherBalance,
+  disconnect as disconnectWeb3,
+} from "@/common/web3.js";
 import { concealAddress } from "@/common/strings.js";
 import contract from "@/common/contract.js";
 
@@ -66,10 +70,10 @@ export default {
       },
     });
 
-    const removeContract = () => {
-      store.commit("setContract", null);
-      store.commit("setContractSigner", null);
-    };
+    // const removeContract = () => {
+    //   store.commit("setContract", null);
+    //   store.commit("setContractSigner", null);
+    // };
 
     const connect = async () => {
       try {
@@ -82,8 +86,9 @@ export default {
 
     const disconnect = () => {
       showButtonMenu.value = false;
-      isConnected.value = false;
-      removeContract();
+      // isConnected.value = false;
+      // removeContract();
+      disconnectWeb3();
       router.push("/app");
     };
 

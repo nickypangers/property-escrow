@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import { formatEtherBalance } from "@/common/web3.js";
 
 export default createStore({
   state: {
@@ -16,6 +17,7 @@ export default createStore({
     },
     isModalOpen: false,
     totalAmountTransacted: 0,
+    totalListingsSold: 0,
   },
   getters: {
     activeContract: (state) => {
@@ -57,7 +59,13 @@ export default createStore({
       state.balance = balance;
     },
     setTotalAmountTransacted(state, totalAmountTransacted) {
-      state.totalAmountTransacted = totalAmountTransacted;
+      state.totalAmountTransacted = formatEtherBalance(
+        totalAmountTransacted,
+        2
+      );
+    },
+    setTotalListingsSold(state, totalListingsSold) {
+      state.totalListingsSold = totalListingsSold;
     },
   },
   actions: {},

@@ -180,6 +180,9 @@ export default {
         let receipt = await contract.purchaseProperty(property.value);
         console.log(receipt);
 
+        await contract.getTotalAmountTransacted();
+        await contract.getTotalListingsSold();
+
         getPropertyDeatil(() => {
           isPurchaseLoading.value = false;
           setModal(
