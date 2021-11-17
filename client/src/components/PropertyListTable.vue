@@ -1,35 +1,37 @@
 <template>
-  <table class="w-full table-auto mt-2 bg-white rounded-xl">
-    <thead>
-      <tr class="border-b">
-        <th>Listing ID</th>
-        <th>Property Name</th>
-        <th>Property Country</th>
-        <th>Seller</th>
-        <th>Price</th>
-        <th></th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody class="divide-y">
-      <template v-if="propertyList.length > 0">
-        <property-list-row
-          v-for="property in propertyList"
-          :key="'property-' + property.id"
-          :property="property"
-          @success="emit('success')"
-          @fail="fail"
-        />
-      </template>
-      <template v-if="propertyList.length == 0">
-        <tr>
-          <td colspan="7" class="text-center">
-            <p>{{ emptyMessage }}</p>
-          </td>
+  <div class="w-full overflow-scroll">
+    <table class="w-full table-auto mt-2 bg-white rounded-xl">
+      <thead>
+        <tr class="border-b">
+          <th>Listing ID</th>
+          <th>Property Name</th>
+          <th>Property Country</th>
+          <th>Seller</th>
+          <th>Price</th>
+          <th></th>
+          <th></th>
         </tr>
-      </template>
-    </tbody>
-  </table>
+      </thead>
+      <tbody class="divide-y">
+        <template v-if="propertyList.length > 0">
+          <property-list-row
+            v-for="property in propertyList"
+            :key="'property-' + property.id"
+            :property="property"
+            @success="emit('success')"
+            @fail="fail"
+          />
+        </template>
+        <template v-if="propertyList.length == 0">
+          <tr>
+            <td colspan="7" class="text-center">
+              <p>{{ emptyMessage }}</p>
+            </td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+  </div>
 </template>
 <script>
 import { ethers } from "ethers";
