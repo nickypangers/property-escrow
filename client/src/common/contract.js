@@ -8,10 +8,17 @@ import { getBalance } from "./web3.js";
 //   gasLimit: 1000000000,
 // };
 
+function getContract() {
+  if (!store.state.isConnected) {
+    return store.state.readOnlyContract;
+  }
+  return store.state.contract;
+}
+
 export default {
   async createListing(listing) {
     try {
-      let contract = store.getters.activeContract;
+      let contract = getContract();
       const txResponse = await contract.createListing(
         listing.propertyAddress.address1,
         listing.propertyAddress.address2,
@@ -33,7 +40,7 @@ export default {
   },
   async getPropertyList() {
     try {
-      let contract = store.getters.activeContract;
+      let contract = getContract();
       const propertyList = await contract.getPropertyList();
       // console.log(propertyList);
       await getBalance();
@@ -45,7 +52,7 @@ export default {
   },
   async purchaseProperty(property) {
     // console.debug("property", property.price);
-    let contract = store.getters.activeContract;
+    let contract = getContract();
     const txResponse = await contract.payProperty(property.id, {
       from: store.state.accounts[0],
       value: property.price,
@@ -57,7 +64,7 @@ export default {
     return { transaction: txReceipt.transactionHash };
   },
   async getPropertyDetail(id) {
-    let contract = store.getters.activeContract;
+    let contract = getContract();
     let property = {
       id: "",
       name: "",
@@ -92,7 +99,7 @@ export default {
   },
   async editProperty(property) {
     try {
-      let contract = store.getters.activeContract;
+      let contract = getContract();
       const txResponse = await contract.editProperty(
         property.id,
         property.name,
@@ -113,7 +120,7 @@ export default {
 
   // async getPropertyListByAddressIsOwner(id) {
   //   try {
-  //     let contract = store.getters.activeContract;
+  //     let contract = getContract();
   //     const propertyList = await contract.getPropertyListByAddressIsOwner(id);
   //     await getBalance();
   //     return propertyList;
@@ -124,7 +131,7 @@ export default {
 
   async getPropertyListByAddressIsOwner(address) {
     try {
-      let contract = store.getters.activeContract;
+      let contract = getContract();
       const propertyList = await contract.getPropertyListByAddressIsOwner(
         address
       );
@@ -138,7 +145,7 @@ export default {
 
   async getPropertyListByAddressIsBuyer(address) {
     try {
-      let contract = store.getters.activeContract;
+      let contract = getContract();
       const propertyList = await contract.getPropertyListByAddressIsBuyer(
         address
       );
@@ -152,7 +159,7 @@ export default {
 
   async getTotalAmountTransacted() {
     try {
-      let contract = store.getters.activeContract;
+      let contract = getContract();
       let totalAmountTransacted = await contract.getTotalAmountTransacted();
       store.commit("setTotalAmountTransacted", totalAmountTransacted);
     } catch (e) {
@@ -163,7 +170,7 @@ export default {
 
   async getTotalListingsSold() {
     try {
-      let contract = store.getters.activeContract;
+      let contract = getContract();
       let totalListingsSold = await contract.getTotalListingsSold();
       store.commit("setTotalListingsSold", totalListingsSold);
     } catch (e) {
@@ -174,7 +181,7 @@ export default {
 
   async cancelListing(id) {
     try {
-      let contract = store.getters.activeContract;
+      let contract = getContract();
       const txResponse = await contract.cancelListing(id);
       const txReceipt = await txResponse.wait();
       // console.debug("txReceipt", txReceipt);
@@ -200,6 +207,4 @@ export default {
 
     return "";
   },
-
-  // async getPropertyList
 };

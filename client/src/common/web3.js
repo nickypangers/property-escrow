@@ -12,7 +12,7 @@ export const contractAddress = () =>
   "0xAE01f0c14f4784fEC698f300832832a4ECB28F27";
 
 const getNetwork = async () => {
-  const network = await getProvider().getNetwork();
+  const network = await getWebProvider().getNetwork();
   // console.debug("network", network);
   if (network.name != "ropsten") {
     throw new Error(`Please connect to ropsten. (Currently: ${network.name})`);
@@ -44,7 +44,7 @@ const getAccounts = async () => {
     throw "Provider not found";
   }
 
-  console.log(provider);
+  // console.log(provider);
 
   let accounts = await provider.listAccounts();
   console.log(accounts);
@@ -118,10 +118,10 @@ export const initWeb3 = async () => {
     method: "eth_requestAccounts",
   });
   await getNetwork();
+  store.commit("setIsConnected", true);
   await getAccounts();
   await getContract();
   await getBalance();
-  store.commit("setIsConnected", true);
 };
 
 export const getBalance = async () => {
@@ -135,6 +135,7 @@ export const getBalance = async () => {
   }
 
   let balance = await provider.getBalance(store.state.accounts[0]);
+  // console.log(balance);
   store.commit("setBalance", balance);
 };
 

@@ -20,13 +20,6 @@ const routes = [
     path: "/app",
     name: "App",
     component: App,
-    // beforeEnter(to, from, next) {
-    //   if (store.getters.activeContract == null) {
-    //     next("/");
-    //   } else {
-    //     next();
-    //   }
-    // },
     children: [
       {
         path: "",
@@ -40,6 +33,7 @@ const routes = [
         beforeEnter(to, from, next) {
           if (store.state.isConnected) {
             next();
+            return;
           }
           next("/app");
         },
@@ -51,6 +45,7 @@ const routes = [
         beforeEnter(to, from, next) {
           if (store.state.isConnected) {
             next();
+            return;
           }
           next("/app");
         },
@@ -62,6 +57,7 @@ const routes = [
         beforeEnter(to, from, next) {
           if (store.state.isConnected) {
             next();
+            return;
           }
           next("/app");
         },
@@ -76,10 +72,9 @@ const routes = [
         name: "Edit",
         component: Edit,
         beforeEnter: async (to, from, next) => {
-          if (store.state.isConnected) {
-            next();
-          } else {
-            next("/app");
+          if (!store.state.isConnected) {
+            next(false);
+            return;
           }
 
           let id = to.params.id;
@@ -91,6 +86,7 @@ const routes = [
           }
           if (!propertyDetail.isActive) {
             next(false);
+            return;
           }
           next();
         },
