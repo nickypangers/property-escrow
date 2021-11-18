@@ -1,41 +1,63 @@
 <template>
   <div>
-    <div class="w-full flex justify-between items-center">
-      <p class="text-xl font-bold">Manage My Listings</p>
-    </div>
-    <template v-if="!isPropertyListLoaded">
-      <div class="w-full flex justify-center">
-        <loader />
+    <div>
+      <div class="w-full flex justify-between items-center">
+        <p class="text-xl font-bold">Manage My Listings</p>
       </div>
-    </template>
-    <template v-if="isPropertyListLoaded">
-      <property-list-table :property-list="propertyList" />
-    </template>
+      <template v-if="!isPropertyListLoaded">
+        <div class="w-full flex justify-center">
+          <loader />
+        </div>
+      </template>
+      <template v-if="isPropertyListLoaded">
+        <property-list-table :property-list="propertyList" />
+      </template>
+    </div>
+    <modal :is-visible="isVisible" @cancel="closeModal">
+      <template v-slot:title>{{ modal.title }}</template>
+      <template v-slot:body>
+        <p>{{ modal.body }}</p>
+      </template>
+    </modal>
   </div>
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { reactive, ref, onMounted } from "vue";
 import Loader from "@/components/util/Loader";
 import contract from "@/common/contract.js";
 import { useStore } from "vuex";
 import PropertyListTable from "@/components/PropertyListTable";
+import Modal from "@/components/util/Modal";
 export default {
   name: "ManageMyListings",
   components: {
     Loader,
     PropertyListTable,
+    Modal,
   },
   setup() {
     const isPropertyListLoaded = ref(false);
     const propertyList = ref([]);
     const store = useStore();
+    const isVisible = ref(false);
+    const modal = reactive({
+      title: "",
+      body: "",
+    });
 
     const setPropertyList = (list) => {
       propertyList.value = list;
       isPropertyListLoaded.value = true;
     };
-
+    const closeModal = () => {
+      isVisible.value = false;
+    };
+    const setModal = (title, body) => {
+      modal.title = title;
+      modal.body = body;
+      isVisible.value = true;
+    };
     onMounted(async () => {
       try {
         let list = await contract.getPropertyListByAddressIsOwner(
@@ -44,13 +66,17 @@ export default {
         setPropertyList(list);
       } catch (e) {
         setPropertyList([]);
-        alert(e.message);
+        setModal("Error", e.message);
       }
     });
 
     return {
       isPropertyListLoaded,
       propertyList,
+      isVisible,
+      modal,
+      closeModal,
+      setModal,
     };
   },
 };

@@ -9,7 +9,7 @@ import store from "@/store/index.js";
 // };
 
 export const contractAddress = () =>
-  "0xAE01f0c14f4784fEC698f300832832a4ECB28F27";
+  "0x0aF07B6B1a4d29849cbbbAE07Ae903243Fdff220";
 
 const getNetwork = async () => {
   const network = await getWebProvider().getNetwork();

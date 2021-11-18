@@ -1,12 +1,17 @@
 import store from "@/store/index.js";
 import { ethers } from "ethers";
 import { getBalance } from "./web3.js";
+// import { getProvider, getBalance } from "./web3.js";
 // import { formatEtherBalance } from "./web3.js";
 
-// const options = {
-//   gasPrice: 200,
-//   gasLimit: 1000000000,
-// };
+// async function estimateGas() {
+//   const provider = await getProvider();
+
+// }
+
+const options = {
+  // gasPrice: 50000000000,
+};
 
 function getContract() {
   if (!store.state.isConnected) {
@@ -132,8 +137,10 @@ export default {
   async getPropertyListByAddressIsOwner(address) {
     try {
       let contract = getContract();
+      console.log(contract);
       const propertyList = await contract.getPropertyListByAddressIsOwner(
-        address
+        address,
+        options
       );
       await getBalance();
       return propertyList;
@@ -146,8 +153,11 @@ export default {
   async getPropertyListByAddressIsBuyer(address) {
     try {
       let contract = getContract();
+      console.log(contract);
+
       const propertyList = await contract.getPropertyListByAddressIsBuyer(
-        address
+        address,
+        options
       );
       await getBalance();
       return propertyList;
