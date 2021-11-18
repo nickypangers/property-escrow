@@ -62,13 +62,6 @@ export default {
 
     onMounted(async () => {
       try {
-        // contract
-        // .getPropertyListByAddressIsBuyer(store.state.accounts[0])
-        // .then((val) => {
-        //   console.log(val);
-        //   propertyList.value = val;
-        //   isPropertyListLoaded.value = true;
-        // });
         let list = await contract.getPropertyListByAddressIsBuyer(
           store.state.accounts[0]
         );

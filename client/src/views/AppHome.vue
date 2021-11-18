@@ -6,7 +6,7 @@
       <div class="w-full bg-red-300 rounded-xl p-3">
         This app is created as a personal project and is for entertainment
         purposes only. The contract has not been audited. Please do not fill in
-        any personal information. Feel free to check out my porfolio
+        any personal information. Feel free to check out my portfolio
         <a href="http://nickypangers.com" class="text-blue-500 underline"
           >here</a
         >

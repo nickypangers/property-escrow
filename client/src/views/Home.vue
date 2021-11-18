@@ -18,20 +18,6 @@
             This app is currrently live on <b>Ropsten Test Network</b>. Please
             connect to Ropsten in order to interact with the contract.
           </p>
-
-          <!-- <p>This app is currently live on <b>Ropsten</b> test network.</p>
-        <p>
-          This is a personal project and the contract has not been audited.
-          Please do not fill in any personal information including real-world
-          addresses.
-        </p>
-        <p><b>This application is for entertainment purposes only.</b></p>
-        <p>
-          Feel free to check out my porfolio
-          <a href="http://nickypangers.com" class="text-blue-500 underline">
-            here
-          </a>
-        </p> -->
         </div>
       </div>
     </section>

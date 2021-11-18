@@ -30,7 +30,7 @@ const getWebProvider = () => {
   return new ethers.providers.Web3Provider(window.ethereum, "any");
 };
 
-const getProvider = () => {
+export const getProvider = () => {
   // return new ethers.providers.Web3Provider(window.ethereum, "any");
   if (!store.state.isConnected) {
     return getInfuraProvider();

@@ -33,6 +33,9 @@ contract PropertyEscrow {
 
     uint256 private id;
 
+    uint256 public totalListingsSold = 0;
+    uint256 public totalAmountTransacted = 0;
+
     constructor() {
         _owner = msg.sender;
         managers[_owner] = true;
@@ -200,6 +203,11 @@ contract PropertyEscrow {
                 address seller = properties[i].owner;
                 payable(seller).transfer(properties[i].price);
 
+                totalListingsSold = totalListingsSold + 1;
+                totalAmountTransacted =
+                    totalAmountTransacted +
+                    properties[i].price;
+
                 return true;
             }
         }
@@ -302,6 +310,16 @@ contract PropertyEscrow {
         uint256 total = 0;
         for (uint256 i = 0; i < properties.length; i = i + 1) {
             if (properties[i].isSold == true) {
+                total = total + 1;
+            }
+        }
+        return total;
+    }
+
+    function getCurrentActiveListings() public view returns (uint256) {
+        uint256 total = 0;
+        for (uint256 i = 0; i < properties.length; i = i + 1) {
+            if (properties[i].isActive == true) {
                 total = total + 1;
             }
         }
